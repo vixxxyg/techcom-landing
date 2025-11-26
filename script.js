@@ -7,7 +7,7 @@ const bwImages = [
 
 // Colored machine images (side equipment)
 const sideImages = [
-  "1111.png",
+  "eqp1.png",
   "eqp2.png",
   "eqp3.png"
 ];
