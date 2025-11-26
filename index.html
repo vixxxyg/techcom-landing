@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechCom Bubble Landing</title>
+    <title>TechCom Landing</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <div class="wrapper">
-        <div class="bubble">
-            <div class="inner-circle">
-                <!-- ТУТ БУДЕТ МЕНЯТЬСЯ PNG-КАРТИНКА -->
-                <img src="machine1.png" alt="machine" id="machine">
-            </div>
-        </div>
+<div class="scene">
 
-        <h1 class="brand">TECHCOM</h1>
-        <p class="subtitle">Mining Equipment & Spare Parts</p>
+    <!-- Main orange bubble (brand visual element) -->
+    <div class="bubble">
+        <div class="inner-circle">
+            <!-- Black & white image displayed inside the bubble -->
+            <img src="bw1.png" id="bw-img" />
+        </div>
     </div>
+
+    <!-- Side machine (animated equipment entering from the left) -->
+    <img src="color1.png" class="side-machine" id="side-machine">
+
+</div>
 
 <script src="script.js"></script>
 </body>
