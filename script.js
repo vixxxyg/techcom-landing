@@ -1,35 +1,102 @@
-// Black & white images for the bubble
-const bwImages = [
-  "bw1.png",
-  "bw2.png",
-  "bw3.png"
+const pages = [
+  {
+    bubbleImage: "bw4.png",
+    machineImage: "eqp7.png",
+    background: { start: "#1a1206", end: "#050505" }
+  },
+  {
+    bubbleImage: "bw2.png",
+    machineImage: "eqp10.png",
+    background: { start: "#0f0e22", end: "#04040e" }
+  },
+  {
+    bubbleImage: "bw6.png",
+    machineImage: "eqp6.png",
+    background: { start: "#1a0e09", end: "#040200" }
+  }
 ];
 
-// Colored machine images (side equipment)
-const sideImages = [
-  "eqp1.png",
-  "eqp2.png",
-  "eqp3.png"
-];
-
-let index = 0;
-
-const bwImg = document.getElementById("bw-img");
+const bubbleImgPrimary = document.getElementById("bw-img-primary");
+const bubbleImgSecondary = document.getElementById("bw-img-secondary");
 const sideMachine = document.getElementById("side-machine");
+const root = document.documentElement;
 
-function changeImages() {
-  // Move to the next image index (looping)
-  index = (index + 1) % bwImages.length;
+let currentIndex = 0;
+let isPrimaryVisible = true;
+const BUBBLE_FADE_DELAY = 700;
 
-  // Update black & white image inside the bubble
-  bwImg.src = bwImages[index];
+function updateBubbleImage(src) {
+  const incoming = isPrimaryVisible ? bubbleImgSecondary : bubbleImgPrimary;
+  const outgoing = isPrimaryVisible ? bubbleImgPrimary : bubbleImgSecondary;
 
-  // Update side machine image and restart animation
-  sideMachine.src = sideImages[index];
-  sideMachine.style.animation = "none";  // Reset animation
-  void sideMachine.offsetWidth;          // Trigger reflow (forces restart)
-  sideMachine.style.animation = "slideIn 1.4s ease forwards";
+  const reveal = () => {
+    incoming.classList.add("bubble-img--visible");
+    outgoing.classList.remove("bubble-img--visible");
+    isPrimaryVisible = !isPrimaryVisible;
+  };
+
+  const onReady = () => requestAnimationFrame(reveal);
+
+  if (incoming.getAttribute("src") === src && incoming.complete) {
+    onReady();
+    return;
+  }
+
+  incoming.addEventListener(
+    "load",
+    () => {
+      onReady();
+    },
+    { once: true }
+  );
+
+  if (incoming.getAttribute("src") !== src) {
+    incoming.src = src;
+  }
 }
 
-// Change images every 3 seconds
-setInterval(changeImages, 3000);
+function updateBackground(colors) {
+  root.style.setProperty("--bg-start", colors.start);
+  root.style.setProperty("--bg-end", colors.end);
+}
+
+function setInitialBubbleImage(src) {
+  bubbleImgPrimary.src = src;
+  bubbleImgSecondary.src = src;
+  bubbleImgPrimary.classList.add("bubble-img--visible");
+  bubbleImgSecondary.classList.remove("bubble-img--visible");
+  isPrimaryVisible = true;
+}
+
+function setScene(page) {
+  updateBackground(page.background);
+  sideMachine.src = page.machineImage;
+}
+
+function startMachineAnimation() {
+  sideMachine.classList.remove("fly");
+  void sideMachine.offsetWidth;
+  sideMachine.classList.add("fly");
+}
+
+function runCycle(page, { fadeDelay = BUBBLE_FADE_DELAY } = {}) {
+  setScene(page);
+  setTimeout(() => {
+    updateBubbleImage(page.bubbleImage);
+  }, fadeDelay);
+  startMachineAnimation();
+}
+
+function handleMachineAnimationEnd() {
+  currentIndex = (currentIndex + 1) % pages.length;
+  const next = pages[currentIndex];
+  runCycle(next);
+}
+
+sideMachine.addEventListener("animationend", handleMachineAnimationEnd);
+
+// Initial paint and kickoff
+const initialPage = pages[currentIndex];
+setInitialBubbleImage(initialPage.bubbleImage);
+setScene(initialPage);
+startMachineAnimation();

@@ -1,51 +1,69 @@
-/* Base page setup */
+:root {
+  --bubble-highlight: rgba(255, 210, 120, 0.95);
+  --bubble-mid: #ff9900;
+  --bubble-dark: #c86e00;
+  --bubble-deep: #643700;
+  --bubble-glow: rgba(255, 153, 0, 0.35);
+  --bg-start: #1a1206;
+  --bg-end: #050505;
+}
+
 body {
   margin: 0;
-  background: #000;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, var(--bg-start), var(--bg-end) 55%);
+  transition: background 1.2s ease;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: #fff;
 }
 
-/* Main container for bubble + machine */
 .scene {
+  width: min(90vw, 720px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
   position: relative;
-  width: 900px;
-  height: 500px;
 }
 
-/* 3D orange bubble */
-.bubble {
-  width: 400px;
-  height: 400px;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border-radius: 50%;
+.visual-stage {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* Layered gradient to create depth */
+.bubble-stage {
+  position: relative;
+  width: min(70vw, 380px);
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bubble {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
   background: radial-gradient(
       circle at 30% 30%,
-      rgba(255, 210, 120, 0.95) 0%,   /* top highlight */
-      rgba(255, 153, 0, 1) 40%,
-      rgba(200, 110, 0, 1) 70%,      /* mid shadow */
-      rgba(100, 55, 0, 1) 100%       /* bottom dark */
+      var(--bubble-highlight) 0%,
+      var(--bubble-mid) 40%,
+      var(--bubble-dark) 70%,
+      var(--bubble-deep) 100%
   );
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* outer glow */
   box-shadow:
-    0 0 60px rgba(255,153,0,0.4),
-    0 0 120px rgba(255,153,0,0.25);
-
-  /* glossy top highlight */
+    0 0 60px var(--bubble-glow),
+    0 0 120px rgba(255, 153, 0, 0.15);
   overflow: hidden;
 }
 
@@ -54,76 +72,78 @@ body {
   position: absolute;
   top: 40px;
   left: 80px;
-  width: 200px;
-  height: 120px;
+  width: 55%;
+  height: 30%;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);
   filter: blur(30px);
 }
 
-/* extra rim light around edge */
-.bubble::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: inset 0 0 30px rgba(255,255,255,0.15);
-}
-
-/* Bubble breathing animation */
 @keyframes bubbleFloat {
-  0% { transform: translateY(-50%) scale(1); }
-  50% { transform: translateY(-52%) scale(1.05); }
-  100% { transform: translateY(-50%) scale(1); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
 
-/* Inner black & white rotating image */
 .inner-circle {
-  width: 300px;
-  height: 300px;
+  position: relative;
+  width: 78%;
+  height: 78%;
   border-radius: 50%;
   overflow: hidden;
-
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.65);
 }
 
-.inner-circle img {
+.bubble-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 3s ease;
 }
 
-/* SIDE MACHINE — small machine arriving into bottom-left side of the bubble */
+.bubble-img--visible {
+  opacity: 1;
+}
+
 .side-machine {
   position: absolute;
-
-  /* Start position: fully off-screen right */
-  right: -400px;
-
-  /* Final anchor position (bottom-left of bubble) */
-  bottom: 85px;
-  left: -175px;
-
-  /* Machine size (scaled down) */
-  width: 440px;       /* adjust as needed */
+  left: 50%;
+  bottom: 0%;
+  height: 110%;
+  width: auto;
   opacity: 0;
-
-  /* Smooth entrance animation */
-  animation: slideIn 1.4s ease forwards;
+  pointer-events: none;
+  transform-origin: center;
 }
 
-/* Slide-in animation */
-@keyframes slideIn {
+.side-machine.fly {
+  animation: machineFly 8s ease-in-out forwards;
+}
+
+@keyframes machineFly {
   0% {
-    transform: translateX(-400px) scale(0.8);
+    transform: translate(-260%, 0) scale(0.6) rotate(-6deg);
     opacity: 0;
   }
+  35% {
+    transform: translate(-50%, 0) scale(0.9) rotate(-2deg);
+    opacity: 1;
+  }
   60% {
-    transform: translateX(10px) scale(0.85);
+    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
     opacity: 1;
   }
   100% {
-    transform: translateX(0) scale(0.9);
-    opacity: 1;
+    transform: translate(220%, 0) scale(0.75) rotate(4deg);
+    opacity: 0;
   }
 }

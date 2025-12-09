@@ -7,22 +7,20 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
 <div class="scene">
-
-    <!-- Main orange bubble (brand visual element) -->
-    <div class="bubble">
-        <div class="inner-circle">
-            <!-- Black & white image displayed inside the bubble -->
-            <img src="bw1.png" id="bw-img" />
+    <div class="visual-stage">
+        <div class="bubble-stage">
+            <div class="bubble" id="bubble">
+                <div class="inner-circle">
+                    <img src="bw2.png" id="bw-img-primary" class="bubble-img bubble-img--visible" alt="TechCom project preview" />
+                    <img src="bw2.png" id="bw-img-secondary" class="bubble-img" aria-hidden="true" alt="" />
+                </div>
+            </div>
+            <img src="eqp1.png" class="side-machine" id="side-machine" alt="TechCom equipment">
         </div>
     </div>
 
-    <!-- Side machine (animated equipment entering from the left) -->
-    <img src="color1.png" class="side-machine" id="side-machine">
-
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
