@@ -1,3 +1,7 @@
+/* =============================
+   DATA: pages configuration
+============================= */
+
 const pages = [
   {
     bubbleImage: "bw4.png",
@@ -16,14 +20,40 @@ const pages = [
   }
 ];
 
+/* =============================
+   ELEMENTS
+============================= */
+
 const bubbleImgPrimary = document.getElementById("bw-img-primary");
 const bubbleImgSecondary = document.getElementById("bw-img-secondary");
 const sideMachine = document.getElementById("side-machine");
 const root = document.documentElement;
 
+// Controls
+const hand = document.getElementById("hand");
+const arrowLeft = document.getElementById("arrow-left");
+const arrowRight = document.getElementById("arrow-right");
+
+/* =============================
+   STATE
+============================= */
+
 let currentIndex = 0;
 let isPrimaryVisible = true;
 const BUBBLE_FADE_DELAY = 700;
+
+/* =============================
+   BACKGROUND UPDATE
+============================= */
+
+function updateBackground(colors) {
+  root.style.setProperty("--bg-start", colors.start);
+  root.style.setProperty("--bg-end", colors.end);
+}
+
+/* =============================
+   BUBBLE IMAGE CROSSFADE
+============================= */
 
 function updateBubbleImage(src) {
   const incoming = isPrimaryVisible ? bubbleImgSecondary : bubbleImgPrimary;
@@ -37,36 +67,34 @@ function updateBubbleImage(src) {
 
   const onReady = () => requestAnimationFrame(reveal);
 
+  // If already loaded → animate immediately
   if (incoming.getAttribute("src") === src && incoming.complete) {
     onReady();
     return;
   }
 
-  incoming.addEventListener(
-    "load",
-    () => {
-      onReady();
-    },
-    { once: true }
-  );
+  // If loading needed → wait
+  incoming.addEventListener("load", onReady, { once: true });
 
   if (incoming.getAttribute("src") !== src) {
     incoming.src = src;
   }
 }
 
-function updateBackground(colors) {
-  root.style.setProperty("--bg-start", colors.start);
-  root.style.setProperty("--bg-end", colors.end);
-}
+/* =============================
+   SET INITIAL BUBBLE
+============================= */
 
 function setInitialBubbleImage(src) {
   bubbleImgPrimary.src = src;
   bubbleImgSecondary.src = src;
   bubbleImgPrimary.classList.add("bubble-img--visible");
   bubbleImgSecondary.classList.remove("bubble-img--visible");
-  isPrimaryVisible = true;
 }
+
+/* =============================
+   MACHINE + BACKGROUND SCENE
+============================= */
 
 function setScene(page) {
   updateBackground(page.background);
@@ -75,28 +103,65 @@ function setScene(page) {
 
 function startMachineAnimation() {
   sideMachine.classList.remove("fly");
-  void sideMachine.offsetWidth;
+  void sideMachine.offsetWidth; // reset animation
   sideMachine.classList.add("fly");
 }
 
-function runCycle(page, { fadeDelay = BUBBLE_FADE_DELAY } = {}) {
+/* =============================
+   MAIN CYCLE
+============================= */
+
+function runCycle(page) {
   setScene(page);
+
+  // bubble fade slightly after machine starts
   setTimeout(() => {
     updateBubbleImage(page.bubbleImage);
-  }, fadeDelay);
+  }, BUBBLE_FADE_DELAY);
+
   startMachineAnimation();
 }
 
+/* =============================
+   AUTO STEP (when machine ends)
+============================= */
+
 function handleMachineAnimationEnd() {
   currentIndex = (currentIndex + 1) % pages.length;
-  const next = pages[currentIndex];
-  runCycle(next);
+  runCycle(pages[currentIndex]);
 }
 
 sideMachine.addEventListener("animationend", handleMachineAnimationEnd);
 
-// Initial paint and kickoff
+/* =============================
+   INITIAL START
+============================= */
+
 const initialPage = pages[currentIndex];
 setInitialBubbleImage(initialPage.bubbleImage);
 setScene(initialPage);
 startMachineAnimation();
+
+/* =============================
+   HAND CLICK ANIMATION
+============================= */
+
+function tapHand() {
+  hand.classList.add("tap");
+  setTimeout(() => hand.classList.remove("tap"), 300);
+}
+
+/* =============================
+   MANUAL CONTROLS
+============================= */
+
+arrowRight.addEventListener("click", () => {
+  tapHand();
+  handleMachineAnimationEnd();
+});
+
+arrowLeft.addEventListener("click", () => {
+  tapHand();
+  currentIndex = (currentIndex - 1 + pages.length) % pages.length;
+  runCycle(pages[currentIndex]);
+});
