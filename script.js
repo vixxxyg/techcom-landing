@@ -1,5 +1,5 @@
 /* ============================================================
-   PAGES (фон + картинка в сфере + машина сбоку)
+   PAGES
 ============================================================ */
 const pages = [
   {
@@ -25,37 +25,23 @@ const pages = [
 const bubbleImgPrimary = document.getElementById("bw-img-primary");
 const bubbleImgSecondary = document.getElementById("bw-img-secondary");
 const sideMachine = document.getElementById("side-machine");
-const root = document.documentElement;
-
 const hand = document.getElementById("hand");
-const arrowLeft = document.getElementById("arrow-left");
 const arrowRight = document.getElementById("arrow-right");
-
-const introText = document.getElementById("intro-text");
+const arrowLeft = document.getElementById("arrow-left");
+const root = document.documentElement;
 
 /* ============================================================
    STATE
 ============================================================ */
 let currentIndex = 0;
 let isPrimaryVisible = true;
-const BUBBLE_FADE_DELAY = 700;
-
 let autoMode = true;
-let AUTO_DELAY = 4000;
+
+const BUBBLE_FADE_DELAY = 700;
+const AUTO_DELAY = 4000;
 
 /* ============================================================
-   INTRO TEXT ANIMATION
-============================================================ */
-function runIntro() {
-  introText.classList.add("show");
-
-  setTimeout(() => {
-    introText.classList.add("hide");
-  }, 1800);
-}
-
-/* ============================================================
-   BUBBLE IMAGE SWITCH
+   BUBBLE FADE
 ============================================================ */
 function updateBubbleImage(src) {
   const incoming = isPrimaryVisible ? bubbleImgSecondary : bubbleImgPrimary;
@@ -67,22 +53,17 @@ function updateBubbleImage(src) {
     isPrimaryVisible = !isPrimaryVisible;
   };
 
-  const onReady = () => requestAnimationFrame(reveal);
-
   if (incoming.src.endsWith(src) && incoming.complete) {
-    onReady();
+    reveal();
     return;
   }
 
-  incoming.addEventListener("load", onReady, { once: true });
-
-  if (!incoming.src.endsWith(src)) {
-    incoming.src = src;
-  }
+  incoming.onload = reveal;
+  incoming.src = src;
 }
 
 /* ============================================================
-   BACKGROUND SWITCH
+   BACKGROUND
 ============================================================ */
 function updateBackground(colors) {
   root.style.setProperty("--bg-start", colors.start);
@@ -90,44 +71,59 @@ function updateBackground(colors) {
 }
 
 /* ============================================================
-   APPLY PAGE
+   SET PAGE
 ============================================================ */
 function setScene(page) {
-  updateBackground(page.background);
   sideMachine.src = page.machineImage;
+  updateBackground(page.background);
 }
 
 /* ============================================================
-   FIXED MACHINE ANIMATION RESET
+   MACHINE ANIMATION RESET
 ============================================================ */
 function startMachineAnimation() {
   sideMachine.classList.remove("fly");
-
-  // надёжный перезапуск CSS-анимации
-  sideMachine.getBoundingClientRect();
+  sideMachine.classList.remove("force-exit");
+  sideMachine.getBoundingClientRect(); // reset
 
   requestAnimationFrame(() => {
     sideMachine.classList.add("fly");
   });
 }
 
+function startMachineExit() {
+  if (sideMachine.classList.contains("force-exit")) return;
+
+  sideMachine.classList.remove("fly");
+  sideMachine.classList.remove("force-exit");
+  sideMachine.getBoundingClientRect();
+
+  requestAnimationFrame(() => {
+    sideMachine.classList.add("force-exit");
+  });
+}
+
 /* ============================================================
-   RUN A FULL CYCLE
+   PAGE CYCLE
 ============================================================ */
-function runCycle(page, { fadeDelay = BUBBLE_FADE_DELAY } = {}) {
+function runCycle(page) {
   setScene(page);
 
   setTimeout(() => {
     updateBubbleImage(page.bubbleImage);
-  }, fadeDelay);
+  }, BUBBLE_FADE_DELAY);
 
   startMachineAnimation();
 }
 
 /* ============================================================
-   AFTER MACHINE EXIT — LOAD NEXT PAGE
+   WHEN MACHINE EXITS
 ============================================================ */
-function handleMachineAnimationEnd() {
+function handleMachineAnimationEnd(event) {
+  if (!event || (event.animationName !== "machineFly" && event.animationName !== "machineExit")) {
+    return;
+  }
+
   currentIndex = (currentIndex + 1) % pages.length;
   runCycle(pages[currentIndex]);
 }
@@ -152,11 +148,11 @@ function tapHand() {
 }
 
 /* ============================================================
-   NEXT MACHINE
+   NEXT BUTTON
 ============================================================ */
 function goNext() {
   tapHand();
-  handleMachineAnimationEnd();
+  startMachineExit();
 }
 
 /* ============================================================
@@ -164,41 +160,28 @@ function goNext() {
 ============================================================ */
 function autoPlay() {
   if (!autoMode) return;
-
   goNext();
-
-  setTimeout(() => {
-    if (autoMode) autoPlay();
-  }, AUTO_DELAY);
+  setTimeout(autoPlay, AUTO_DELAY);
 }
 
 /* ============================================================
-   STOP AUTOPLAY ON USER ACTION
+   STOP / RESUME AUTOPLAY
 ============================================================ */
-function stopAuto() {
-  autoMode = false;
-}
-
-function resumeAuto() {
-  autoMode = true;
-  autoPlay();
-}
-
-arrowLeft.addEventListener("mouseenter", stopAuto);
-arrowRight.addEventListener("mouseenter", stopAuto);
-arrowLeft.addEventListener("mouseleave", resumeAuto);
-arrowRight.addEventListener("mouseleave", resumeAuto);
+arrowLeft.addEventListener("mouseenter", () => autoMode = false);
+arrowRight.addEventListener("mouseenter", () => autoMode = false);
+arrowLeft.addEventListener("mouseleave", () => { autoMode = true; autoPlay(); });
+arrowRight.addEventListener("mouseleave", () => { autoMode = true; autoPlay(); });
 
 /* ============================================================
    USER CLICKS
 ============================================================ */
 arrowRight.addEventListener("click", () => {
-  stopAuto();
+  autoMode = false;
   goNext();
 });
 
 arrowLeft.addEventListener("click", () => {
-  stopAuto();
+  autoMode = false;
   tapHand();
   currentIndex = (currentIndex - 1 + pages.length) % pages.length;
   runCycle(pages[currentIndex]);
@@ -219,11 +202,15 @@ function setInitialBubbleImage(src) {
 
 setInitialBubbleImage(pages[currentIndex].bubbleImage);
 setScene(pages[currentIndex]);
+
+// первая машина приезжает
 startMachineAnimation();
 
-runIntro();
+// рука появляется после приезда машины
+setTimeout(showHandSmooth, 2500);
 
+// рука нажимает и запускает автоплей
 setTimeout(() => {
-  showHandSmooth();
-  setTimeout(autoPlay, 1200);
-}, 2000);
+  tapHand();
+  autoPlay();
+}, 4500);

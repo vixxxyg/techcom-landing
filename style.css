@@ -147,6 +147,10 @@ body {
   animation: machineFly 8s ease-in-out forwards;
 }
 
+.side-machine.force-exit {
+  animation: machineExit 2s ease-in forwards;
+}
+
 @keyframes machineFly {
   0% {
     transform: translate(-260%, 0) scale(0.6) rotate(-6deg);
@@ -164,9 +168,21 @@ body {
   }
 
   100% {
-  transform: translate(220%,0) scale(0.75) rotate(4deg);
-  opacity: 0;
+    transform: translate(220%,0) scale(0.75) rotate(4deg);
+    opacity: 0;
+  }
 }
+
+@keyframes machineExit {
+  0% {
+    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(220%, 0) scale(0.75) rotate(4deg);
+    opacity: 0;
+  }
 }
 
 /* -------------------- CONTROLS (PNG VERSION) -------------------- */
@@ -220,20 +236,20 @@ body {
   transform: translateX(-50%) translateY(120px) scale(0.92);
   opacity: 0;
   transition:
-    opacity 1.3s ease,
-    transform 1.3s cubic-bezier(0.25, 1, 0.35, 1); /* плавная пружина */
+    opacity 2s ease,
+    transform 2s cubic-bezier(0.25, 1, 0.35, 1); /* плавная пружина */
   pointer-events: none;
 }
 
 /* красивая анимация появления руки */
 .hand-click.hand-enter {
   opacity: 1;
-  transform: translateX(2%) translateY(90px) scale(1);
+  transform: translateX(5%) translateY(80px) scale(1);
 }
 
 /* эффект клика */
 .hand-click.tap {
-  transform: translateX(2%) translateY(5px) scale(1);
+  transform: translateX(5%) translateY(3px) scale(1);
   opacity: 1;
 }
 
@@ -252,40 +268,4 @@ body {
   transform: scale(1.2);
   filter: drop-shadow(0 0 18px rgba(255,160,0,1));
   opacity: 1;
-}
-
-/* ================= INTRO TEXT ================= */
-
-.intro-text {
-  position: absolute;
-  top: 12%;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  opacity: 0;
-  text-align: center;
-  color: rgba(255,255,255,0.92);
-  pointer-events: none;
-  transition:
-    opacity 1.2s ease,
-    transform 1.2s cubic-bezier(0.25, 1, 0.35, 1);
-  z-index: 50;
-}
-
-.intro-text.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.intro-text.hide {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-20px);
-}
-
-.scene,
-.visual-stage,
-.bubble-stage {
-  overflow: visible !important;
 }
