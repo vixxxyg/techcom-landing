@@ -40,6 +40,7 @@ const arrowRight = document.getElementById("arrow-right");
 const arrowLeft = document.getElementById("arrow-left");
 const introText = document.getElementById("intro-text");
 const scene = document.getElementById("scene");
+const finalScreen = document.getElementById("final-screen");
 const root = document.documentElement;
 
 /* ============================================================
@@ -103,7 +104,7 @@ function setScene(page) {
 function startMachineAnimation() {
   sideMachine.classList.remove("fly");
   sideMachine.classList.remove("force-exit");
-  sideMachine.getBoundingClientRect(); // reset
+  sideMachine.getBoundingClientRect();
 
   isMachineFlying = true;
   isMachineExiting = false;
@@ -118,7 +119,6 @@ function startMachineExit() {
   if (isMachineExiting) return;
 
   isMachineExiting = true;
-  if (sideMachine.classList.contains("force-exit")) return;
 
   sideMachine.classList.remove("fly");
   sideMachine.classList.remove("force-exit");
@@ -135,9 +135,7 @@ function triggerExitSequence() {
   pendingExitRequest = false;
   tapHand();
 
-  setTimeout(() => {
-    startMachineExit();
-  }, HAND_EXIT_DELAY);
+  setTimeout(() => startMachineExit(), HAND_EXIT_DELAY);
 }
 
 /* ============================================================
@@ -146,11 +144,22 @@ function triggerExitSequence() {
 function runCycle(page) {
   setScene(page);
 
-  setTimeout(() => {
-    updateBubbleImage(page.bubbleImage);
-  }, BUBBLE_FADE_DELAY);
+  setTimeout(() => updateBubbleImage(page.bubbleImage), BUBBLE_FADE_DELAY);
 
   startMachineAnimation();
+}
+
+/* ============================================================
+   FINAL SEQUENCE (LOGO + TAGLINE)
+============================================================ */
+function finishSequence() {
+  autoMode = false;
+
+  if (scene) scene.classList.add("scene--hidden");
+
+  setTimeout(() => {
+    finalScreen.classList.add("final-screen--visible");
+  }, 600);
 }
 
 /* ============================================================
@@ -161,16 +170,21 @@ function handleMachineAnimationEnd(event) {
 
   if (event.animationName === "machineFly") {
     isMachineFlying = false;
-
-    if (pendingExitRequest && !isMachineExiting) {
-      triggerExitSequence();
-    }
+    if (pendingExitRequest && !isMachineExiting) triggerExitSequence();
     return;
   }
 
   if (event.animationName === "machineExit") {
     isMachineExiting = false;
     pendingExitRequest = false;
+
+    const isLastPage = currentIndex === pages.length - 1;
+
+    if (isLastPage) {
+      finishSequence();
+      return;
+    }
+
     currentIndex = (currentIndex + 1) % pages.length;
     runCycle(pages[currentIndex]);
   }
@@ -203,9 +217,7 @@ function goNext() {
 
   pendingExitRequest = true;
 
-  if (!isMachineFlying) {
-    triggerExitSequence();
-  }
+  if (!isMachineFlying) triggerExitSequence();
 }
 
 /* ============================================================
@@ -215,31 +227,25 @@ function startMainSequence() {
   if (mainSequenceStarted) return;
   mainSequenceStarted = true;
 
-  if (scene) {
-    scene.classList.remove("scene--hidden");
-  }
+  scene.classList.remove("scene--hidden");
 
   startMachineAnimation();
 
   setTimeout(showHandSmooth, INTRO_HAND_APPEAR_DELAY);
-
-  setTimeout(() => {
-    autoPlay();
-  }, INTRO_AUTO_START_DELAY);
+  setTimeout(() => autoPlay(), INTRO_AUTO_START_DELAY);
 }
 
 function runIntroSequence() {
-  if (!introText) {
-    startMainSequence();
-    return;
-  }
-
   introText.classList.add("intro-text--animate");
 
-  introText.addEventListener("animationend", () => {
-    introText.classList.add("intro-text--hidden");
-    startMainSequence();
-  }, { once: true });
+  introText.addEventListener(
+    "animationend",
+    () => {
+      introText.classList.add("intro-text--hidden");
+      startMainSequence();
+    },
+    { once: true }
+  );
 }
 
 /* ============================================================
@@ -254,10 +260,16 @@ function autoPlay() {
 /* ============================================================
    STOP / RESUME AUTOPLAY
 ============================================================ */
-arrowLeft.addEventListener("mouseenter", () => autoMode = false);
-arrowRight.addEventListener("mouseenter", () => autoMode = false);
-arrowLeft.addEventListener("mouseleave", () => { autoMode = true; autoPlay(); });
-arrowRight.addEventListener("mouseleave", () => { autoMode = true; autoPlay(); });
+arrowLeft.addEventListener("mouseenter", () => (autoMode = false));
+arrowRight.addEventListener("mouseenter", () => (autoMode = false));
+arrowLeft.addEventListener("mouseleave", () => {
+  autoMode = true;
+  autoPlay();
+});
+arrowRight.addEventListener("mouseleave", () => {
+  autoMode = true;
+  autoPlay();
+});
 
 /* ============================================================
    USER CLICKS
@@ -280,11 +292,8 @@ arrowLeft.addEventListener("click", () => {
 function setInitialBubbleImage(src) {
   bubbleImgPrimary.src = src;
   bubbleImgSecondary.src = src;
-
   bubbleImgPrimary.classList.add("bubble-img--visible");
   bubbleImgSecondary.classList.remove("bubble-img--visible");
-
-  isPrimaryVisible = true;
 }
 
 setInitialBubbleImage(pages[currentIndex].bubbleImage);
