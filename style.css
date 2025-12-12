@@ -36,6 +36,64 @@ body {
   transition: background 1.2s ease;
 }
 
+/* -------------------- INTRO TEXT -------------------- */
+
+.intro-text {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: transparent;
+  background: linear-gradient(120deg, var(--bubble-highlight), var(--bubble-mid), var(--bubble-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 200;
+}
+
+.intro-text--animate {
+  animation: introTextFade 5.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.intro-text--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes introTextFade {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+    filter: blur(14px);
+  }
+
+  25% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+    filter: blur(10px);
+  }
+}
+
 /* -------------------- SCENE -------------------- */
 
 .scene {
@@ -45,6 +103,15 @@ body {
   flex-direction: column;
   align-items: center;
   overflow: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scene--hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  pointer-events: none;
 }
 
 /* -------------------- VISUAL STAGE -------------------- */
@@ -73,6 +140,7 @@ body {
 .bubble {
   width: 100%;
   height: 100%;
+  z-index: 10;
   border-radius: 50%;
   overflow: hidden;
 
@@ -118,6 +186,7 @@ body {
 
 .bubble-img {
   position: absolute;
+  z-index: 10;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -141,10 +210,12 @@ body {
   opacity: 0;
   pointer-events: none;
   transform-origin: center;
+  transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+  z-index: 300;
 }
 
 .side-machine.fly {
-  animation: machineFly 8s ease-in-out forwards;
+  animation: machineFly 4s ease-in-out forwards;
 }
 
 .side-machine.force-exit {
@@ -153,23 +224,28 @@ body {
 
 @keyframes machineFly {
   0% {
-    transform: translate(-260%, 0) scale(0.6) rotate(-6deg);
+    transform: translate(-260%, 0) scale(0.9) rotate(-6deg);
     opacity: 0;
   }
 
-  35% {
-    transform: translate(-50%, 0) scale(0.9) rotate(-2deg);
+  40% {
+    transform: translate(-55%, 0) scale(0.9) rotate(-3deg);
     opacity: 1;
   }
 
   60% {
+    transform: translate(-55%, 0) scale(0.9) rotate(-1.2deg);
+    opacity: 1;
+  }
+
+  90% {
     transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
     opacity: 1;
   }
 
   100% {
-    transform: translate(220%,0) scale(0.75) rotate(4deg);
-    opacity: 0;
+    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+    opacity: 1;
   }
 }
 
@@ -180,7 +256,7 @@ body {
   }
 
   100% {
-    transform: translate(220%, 0) scale(0.75) rotate(4deg);
+    transform: translate(220%, 0) scale(0.9) rotate(4deg);
     opacity: 0;
   }
 }
@@ -189,7 +265,7 @@ body {
 
 .controls {
   position: absolute;
-  bottom: -90px;
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -268,4 +344,48 @@ body {
   transform: scale(1.2);
   filter: drop-shadow(0 0 18px rgba(255,160,0,1));
   opacity: 1;
+}
+
+
+/* -------------------- INTRO TEXT (CLEAN MOBILE VERSION) -------------------- */
+
+.intro-text {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Чистый идеальный фон */
+  background: radial-gradient(
+      circle at 50% 50%,
+      #2a2a2a 0%,
+      #0f0f0f 80%,
+      #000000 100%
+  );
+
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  text-transform: uppercase;
+
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  background-image: linear-gradient(
+      90deg,
+      #ffcf7a 0%,
+      #ffa320 40%,
+      #e57b00 100%
+  );
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+.intro-text--animate {
+  animation: introTextFade 4s ease-out forwards;
 }

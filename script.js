@@ -16,6 +16,11 @@ const pages = [
     bubbleImage: "bw6.png",
     machineImage: "eqp6.png",
     background: { start: "#1a0e09", end: "#040200" }
+  },
+  {
+    bubbleImage: "bw.png",
+    machineImage: "eqp.png",
+    background: { start: "#1a0e09", end: "#040200" }
   }
 ];
 
@@ -28,6 +33,8 @@ const sideMachine = document.getElementById("side-machine");
 const hand = document.getElementById("hand");
 const arrowRight = document.getElementById("arrow-right");
 const arrowLeft = document.getElementById("arrow-left");
+const introText = document.getElementById("intro-text");
+const scene = document.getElementById("scene");
 const root = document.documentElement;
 
 /* ============================================================
@@ -36,9 +43,16 @@ const root = document.documentElement;
 let currentIndex = 0;
 let isPrimaryVisible = true;
 let autoMode = true;
+let mainSequenceStarted = false;
+let isMachineFlying = false;
+let isMachineExiting = false;
+let pendingExitRequest = false;
 
 const BUBBLE_FADE_DELAY = 700;
 const AUTO_DELAY = 4000;
+const INTRO_HAND_APPEAR_DELAY = 2500;
+const INTRO_AUTO_START_DELAY = 5500;
+const HAND_EXIT_DELAY = 200;
 
 /* ============================================================
    BUBBLE FADE
@@ -86,12 +100,19 @@ function startMachineAnimation() {
   sideMachine.classList.remove("force-exit");
   sideMachine.getBoundingClientRect(); // reset
 
+  isMachineFlying = true;
+  isMachineExiting = false;
+  pendingExitRequest = false;
+
   requestAnimationFrame(() => {
     sideMachine.classList.add("fly");
   });
 }
 
 function startMachineExit() {
+  if (isMachineExiting) return;
+
+  isMachineExiting = true;
   if (sideMachine.classList.contains("force-exit")) return;
 
   sideMachine.classList.remove("fly");
@@ -101,6 +122,17 @@ function startMachineExit() {
   requestAnimationFrame(() => {
     sideMachine.classList.add("force-exit");
   });
+}
+
+function triggerExitSequence() {
+  if (isMachineFlying || isMachineExiting) return;
+
+  pendingExitRequest = false;
+  tapHand();
+
+  setTimeout(() => {
+    startMachineExit();
+  }, HAND_EXIT_DELAY);
 }
 
 /* ============================================================
@@ -120,12 +152,23 @@ function runCycle(page) {
    WHEN MACHINE EXITS
 ============================================================ */
 function handleMachineAnimationEnd(event) {
-  if (!event || (event.animationName !== "machineFly" && event.animationName !== "machineExit")) {
+  if (!event) return;
+
+  if (event.animationName === "machineFly") {
+    isMachineFlying = false;
+
+    if (pendingExitRequest && !isMachineExiting) {
+      triggerExitSequence();
+    }
     return;
   }
 
-  currentIndex = (currentIndex + 1) % pages.length;
-  runCycle(pages[currentIndex]);
+  if (event.animationName === "machineExit") {
+    isMachineExiting = false;
+    pendingExitRequest = false;
+    currentIndex = (currentIndex + 1) % pages.length;
+    runCycle(pages[currentIndex]);
+  }
 }
 
 sideMachine.addEventListener("animationend", handleMachineAnimationEnd);
@@ -151,8 +194,47 @@ function tapHand() {
    NEXT BUTTON
 ============================================================ */
 function goNext() {
-  tapHand();
-  startMachineExit();
+  if (isMachineExiting || pendingExitRequest) return;
+
+  pendingExitRequest = true;
+
+  if (!isMachineFlying) {
+    triggerExitSequence();
+  }
+}
+
+/* ============================================================
+   INTRO / INITIALIZATION
+============================================================ */
+function startMainSequence() {
+  if (mainSequenceStarted) return;
+  mainSequenceStarted = true;
+
+  if (scene) {
+    scene.classList.remove("scene--hidden");
+  }
+
+  startMachineAnimation();
+
+  setTimeout(showHandSmooth, INTRO_HAND_APPEAR_DELAY);
+
+  setTimeout(() => {
+    autoPlay();
+  }, INTRO_AUTO_START_DELAY);
+}
+
+function runIntroSequence() {
+  if (!introText) {
+    startMainSequence();
+    return;
+  }
+
+  introText.classList.add("intro-text--animate");
+
+  introText.addEventListener("animationend", () => {
+    introText.classList.add("intro-text--hidden");
+    startMainSequence();
+  }, { once: true });
 }
 
 /* ============================================================
@@ -202,15 +284,4 @@ function setInitialBubbleImage(src) {
 
 setInitialBubbleImage(pages[currentIndex].bubbleImage);
 setScene(pages[currentIndex]);
-
-// первая машина приезжает
-startMachineAnimation();
-
-// рука появляется после приезда машины
-setTimeout(showHandSmooth, 2500);
-
-// рука нажимает и запускает автоплей
-setTimeout(() => {
-  tapHand();
-  autoPlay();
-}, 4500);
+runIntroSequence();
