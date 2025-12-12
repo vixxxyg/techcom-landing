@@ -21,6 +21,11 @@ const pages = [
     bubbleImage: "bw.png",
     machineImage: "eqp.png",
     background: { start: "#1a0e09", end: "#040200" }
+  },
+  {
+    bubbleImage: "bw12.png",
+    machineImage: "eqp12.png",
+    background: { start: "#1a0e09", end: "#040200" }
   }
 ];
 
