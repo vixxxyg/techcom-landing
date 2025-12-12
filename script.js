@@ -1,7 +1,6 @@
-/* =============================
-   DATA: pages configuration
-============================= */
-
+/* ============================================================
+   PAGES (фон + картинка в сфере + машина сбоку)
+============================================================ */
 const pages = [
   {
     bubbleImage: "bw4.png",
@@ -20,41 +19,44 @@ const pages = [
   }
 ];
 
-/* =============================
+/* ============================================================
    ELEMENTS
-============================= */
-
+============================================================ */
 const bubbleImgPrimary = document.getElementById("bw-img-primary");
 const bubbleImgSecondary = document.getElementById("bw-img-secondary");
 const sideMachine = document.getElementById("side-machine");
 const root = document.documentElement;
 
-// Controls
 const hand = document.getElementById("hand");
 const arrowLeft = document.getElementById("arrow-left");
 const arrowRight = document.getElementById("arrow-right");
 
-/* =============================
-   STATE
-============================= */
+const introText = document.getElementById("intro-text");
 
+/* ============================================================
+   STATE
+============================================================ */
 let currentIndex = 0;
 let isPrimaryVisible = true;
 const BUBBLE_FADE_DELAY = 700;
 
-/* =============================
-   BACKGROUND UPDATE
-============================= */
+let autoMode = true;
+let AUTO_DELAY = 4000;
 
-function updateBackground(colors) {
-  root.style.setProperty("--bg-start", colors.start);
-  root.style.setProperty("--bg-end", colors.end);
+/* ============================================================
+   INTRO TEXT ANIMATION
+============================================================ */
+function runIntro() {
+  introText.classList.add("show");
+
+  setTimeout(() => {
+    introText.classList.add("hide");
+  }, 1800);
 }
 
-/* =============================
-   BUBBLE IMAGE CROSSFADE
-============================= */
-
+/* ============================================================
+   BUBBLE IMAGE SWITCH
+============================================================ */
 function updateBubbleImage(src) {
   const incoming = isPrimaryVisible ? bubbleImgSecondary : bubbleImgPrimary;
   const outgoing = isPrimaryVisible ? bubbleImgPrimary : bubbleImgSecondary;
@@ -67,65 +69,64 @@ function updateBubbleImage(src) {
 
   const onReady = () => requestAnimationFrame(reveal);
 
-  // If already loaded → animate immediately
-  if (incoming.getAttribute("src") === src && incoming.complete) {
+  if (incoming.src.endsWith(src) && incoming.complete) {
     onReady();
     return;
   }
 
-  // If loading needed → wait
   incoming.addEventListener("load", onReady, { once: true });
 
-  if (incoming.getAttribute("src") !== src) {
+  if (!incoming.src.endsWith(src)) {
     incoming.src = src;
   }
 }
 
-/* =============================
-   SET INITIAL BUBBLE
-============================= */
-
-function setInitialBubbleImage(src) {
-  bubbleImgPrimary.src = src;
-  bubbleImgSecondary.src = src;
-  bubbleImgPrimary.classList.add("bubble-img--visible");
-  bubbleImgSecondary.classList.remove("bubble-img--visible");
+/* ============================================================
+   BACKGROUND SWITCH
+============================================================ */
+function updateBackground(colors) {
+  root.style.setProperty("--bg-start", colors.start);
+  root.style.setProperty("--bg-end", colors.end);
 }
 
-/* =============================
-   MACHINE + BACKGROUND SCENE
-============================= */
-
+/* ============================================================
+   APPLY PAGE
+============================================================ */
 function setScene(page) {
   updateBackground(page.background);
   sideMachine.src = page.machineImage;
 }
 
+/* ============================================================
+   FIXED MACHINE ANIMATION RESET
+============================================================ */
 function startMachineAnimation() {
   sideMachine.classList.remove("fly");
-  void sideMachine.offsetWidth; // reset animation
-  sideMachine.classList.add("fly");
+
+  // надёжный перезапуск CSS-анимации
+  sideMachine.getBoundingClientRect();
+
+  requestAnimationFrame(() => {
+    sideMachine.classList.add("fly");
+  });
 }
 
-/* =============================
-   MAIN CYCLE
-============================= */
-
-function runCycle(page) {
+/* ============================================================
+   RUN A FULL CYCLE
+============================================================ */
+function runCycle(page, { fadeDelay = BUBBLE_FADE_DELAY } = {}) {
   setScene(page);
 
-  // bubble fade slightly after machine starts
   setTimeout(() => {
     updateBubbleImage(page.bubbleImage);
-  }, BUBBLE_FADE_DELAY);
+  }, fadeDelay);
 
   startMachineAnimation();
 }
 
-/* =============================
-   AUTO STEP (when machine ends)
-============================= */
-
+/* ============================================================
+   AFTER MACHINE EXIT — LOAD NEXT PAGE
+============================================================ */
 function handleMachineAnimationEnd() {
   currentIndex = (currentIndex + 1) % pages.length;
   runCycle(pages[currentIndex]);
@@ -133,35 +134,96 @@ function handleMachineAnimationEnd() {
 
 sideMachine.addEventListener("animationend", handleMachineAnimationEnd);
 
-/* =============================
-   INITIAL START
-============================= */
-
-const initialPage = pages[currentIndex];
-setInitialBubbleImage(initialPage.bubbleImage);
-setScene(initialPage);
-startMachineAnimation();
-
-/* =============================
-   HAND CLICK ANIMATION
-============================= */
+/* ============================================================
+   HAND ANIMATION
+============================================================ */
+function showHandSmooth() {
+  hand.classList.add("hand-enter");
+}
 
 function tapHand() {
   hand.classList.add("tap");
-  setTimeout(() => hand.classList.remove("tap"), 300);
+  arrowRight.classList.add("simulate-hover");
+
+  setTimeout(() => {
+    hand.classList.remove("tap");
+    arrowRight.classList.remove("simulate-hover");
+  }, 300);
 }
 
-/* =============================
-   MANUAL CONTROLS
-============================= */
-
-arrowRight.addEventListener("click", () => {
+/* ============================================================
+   NEXT MACHINE
+============================================================ */
+function goNext() {
   tapHand();
   handleMachineAnimationEnd();
+}
+
+/* ============================================================
+   AUTOPLAY
+============================================================ */
+function autoPlay() {
+  if (!autoMode) return;
+
+  goNext();
+
+  setTimeout(() => {
+    if (autoMode) autoPlay();
+  }, AUTO_DELAY);
+}
+
+/* ============================================================
+   STOP AUTOPLAY ON USER ACTION
+============================================================ */
+function stopAuto() {
+  autoMode = false;
+}
+
+function resumeAuto() {
+  autoMode = true;
+  autoPlay();
+}
+
+arrowLeft.addEventListener("mouseenter", stopAuto);
+arrowRight.addEventListener("mouseenter", stopAuto);
+arrowLeft.addEventListener("mouseleave", resumeAuto);
+arrowRight.addEventListener("mouseleave", resumeAuto);
+
+/* ============================================================
+   USER CLICKS
+============================================================ */
+arrowRight.addEventListener("click", () => {
+  stopAuto();
+  goNext();
 });
 
 arrowLeft.addEventListener("click", () => {
+  stopAuto();
   tapHand();
   currentIndex = (currentIndex - 1 + pages.length) % pages.length;
   runCycle(pages[currentIndex]);
 });
+
+/* ============================================================
+   INITIAL START
+============================================================ */
+function setInitialBubbleImage(src) {
+  bubbleImgPrimary.src = src;
+  bubbleImgSecondary.src = src;
+
+  bubbleImgPrimary.classList.add("bubble-img--visible");
+  bubbleImgSecondary.classList.remove("bubble-img--visible");
+
+  isPrimaryVisible = true;
+}
+
+setInitialBubbleImage(pages[currentIndex].bubbleImage);
+setScene(pages[currentIndex]);
+startMachineAnimation();
+
+runIntro();
+
+setTimeout(() => {
+  showHandSmooth();
+  setTimeout(autoPlay, 1200);
+}, 2000);
