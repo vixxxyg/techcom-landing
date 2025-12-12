@@ -3,9 +3,9 @@
 ============================================================ */
 const pages = [
   {
-    bubbleImage: "bw4.png",
-    machineImage: "eqp7.png",
-    background: { start: "#1a1206", end: "#050505" }
+    bubbleImage: "bw6.png",
+    machineImage: "eqp6.png",
+    background: { start: "#1a0e09", end: "#040200" }
   },
   {
     bubbleImage: "bw2.png",
@@ -13,9 +13,9 @@ const pages = [
     background: { start: "#0f0e22", end: "#04040e" }
   },
   {
-    bubbleImage: "bw6.png",
-    machineImage: "eqp6.png",
-    background: { start: "#1a0e09", end: "#040200" }
+    bubbleImage: "bw4.png",
+    machineImage: "eqp7.png",
+    background: { start: "#1a1206", end: "#050505" }
   },
   {
     bubbleImage: "bw.png",

@@ -492,7 +492,10 @@ body {
   justify-content: center;
   align-items: center;
 
-  background: rgba(0,0,0,0.88);
+  background: radial-gradient(
+      circle at 50% -20%,
+      #2d2d2d 0%,
+      #121212 100%);
 
   opacity: 0;
   pointer-events: none;
@@ -564,4 +567,10 @@ body {
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
+}
+
+/* --- TEMP: hide controls for video --- */
+.hand-click,
+.controls {
+  display: none !important;
 }
