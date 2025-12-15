@@ -23,8 +23,18 @@ const pages = [
     background: { start: "#1a0e09", end: "#040200" }
   },
   {
+    bubbleImage: "bw13.png",
+    machineImage: "eqp13.png",
+    background: { start: "#1a0e09", end: "#040200" }
+  },
+  {
     bubbleImage: "bw12.png",
     machineImage: "eqp12.png",
+    background: { start: "#1a0e09", end: "#040200" }
+  },
+  {
+    bubbleImage: "bw14.png",
+    machineImage: "eqp14.png",
     background: { start: "#1a0e09", end: "#040200" }
   }
 ];
