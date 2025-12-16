@@ -1,146 +1,149 @@
-
-
-/* -------------------- ROOT VARIABLES -------------------- */
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
 
 :root {
+  --brand: #ff9900;
+
   --bubble-highlight: rgba(255, 210, 120, 0.95);
   --bubble-mid: #ff9900;
   --bubble-dark: #c86e00;
   --bubble-deep: #643700;
   --bubble-glow: rgba(255,153,0,0.35);
-
-  --bg-start: #1a1206;
-  --bg-end: #050505;
 }
 
-/* -------------------- GLOBAL -------------------- */
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 body {
   margin: 0;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-top: 72px;
 
-  /* Новый асфальтовый фон TechCom */
   background: radial-gradient(
-      circle at 50% -20%,
-      #2d2d2d 0%,   /* светлый графит */
-      #121212 100%  /* глубокий матовый черный */
+    circle at 50% -10%,
+    #3a3a3a 0%,
+    #1b1b1b 55%,
+    #0f0f0f 100%
   );
-  background-attachment: fixed;
 
   font-family: "Manrope", sans-serif;
-  color: #fff;
+  color: #ffffff;
   overflow-x: hidden;
-  transition: background 1.2s ease;
 }
 
-/* -------------------- INTRO TEXT -------------------- */
+/* =========================================================
+   HEADER
+========================================================= */
 
-.intro-text {
+.site-header {
   position: fixed;
-  inset: 0;
+  top: 0;
+  width: 100%;
+  height: 72px;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(55,55,55,0.95),
+    rgba(32,32,32,0.85)
+  );
+
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08); /* ⬅ линия */
+  z-index: 100000;
+}
+
+.header-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: clamp(1.5rem, 4vw, 3.5rem);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-weight: 800;
-  color: transparent;
-  background: linear-gradient(120deg, var(--bubble-highlight), var(--bubble-mid), var(--bubble-dark));
-  -webkit-background-clip: text;
-  background-clip: text;
-  text-shadow: 0 0 40px rgba(0, 0, 0, 0.65);
-  pointer-events: none;
-  opacity: 0;
-  z-index: 200;
+  justify-content: space-between;
 }
 
-.intro-text--animate {
-  animation: introTextFade 5.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+/* Logo */
+.site-logo img {
+  height: 52px;
+  display: block;
 }
 
-.intro-text--hidden {
-  opacity: 0;
-  visibility: hidden;
+/* Contacts */
+.header-contacts {
+  display: flex;
+  align-items: center;
+  gap: 26px;
 }
 
-@keyframes introTextFade {
-  0% {
-    opacity: 0;
-    transform: translateY(50px);
-    filter: blur(14px);
-  }
+.header-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-  25% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
 
-  75% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-30px);
-    filter: blur(10px);
-  }
+  transition: color 0.25s ease;
 }
 
-/* -------------------- SCENE -------------------- */
+.header-item:hover {
+  color: var(--brand);
+}
+
+.header-item img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Language flag — БЕЗ ИЗМЕНЕНИЙ */
+.lang-switch img {
+  width: 22px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* =========================================================
+   SCENE / HERO
+========================================================= */
 
 .scene {
-  width: min(90vw, 720px);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: visible;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  width: min(92vw, 1240px);
+  margin: 0 auto;
+  padding-top: 140px;
 }
 
-.scene--hidden {
-  opacity: 0;
-  transform: translateY(40px);
-  pointer-events: none;
-}
-
-/* -------------------- VISUAL STAGE -------------------- */
-
+/* ---- GRID ---- */
 .visual-stage {
-  position: relative;
-  width: 100%;
-  height: 580px;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 110px;
   align-items: center;
-  overflow: visible; /* 🔥 важно */
+
+  width: 100%;
+  height: 620px;
+  position: relative;
 }
 
-/* -------------------- BUBBLE -------------------- */
+/* =========================================================
+   BUBBLE
+========================================================= */
 
 .bubble-stage {
   position: relative;
-  width: min(70vw, 380px);
+  width: 520px;              /* ⬅️ круг больше */
   aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-self: center;
 }
 
 .bubble {
   width: 100%;
   height: 100%;
-  z-index: 10;
   border-radius: 50%;
   overflow: hidden;
 
@@ -157,36 +160,35 @@ body {
   align-items: center;
 
   box-shadow:
-    0 0 60px var(--bubble-glow),
-    0 0 120px rgba(255,153,0,0.15);
+    0 0 70px var(--bubble-glow),
+    0 0 140px rgba(255,153,0,0.18);
 }
 
 .bubble::before {
   content: "";
   position: absolute;
-  top: 40px;
-  left: 80px;
+  top: 48px;
+  left: 90px;
   width: 55%;
   height: 30%;
   border-radius: 50%;
   background: rgba(255,255,255,0.3);
-  filter: blur(30px);
+  filter: blur(34px);
 }
 
 .inner-circle {
   position: relative;
-  width: 78%;
-  height: 78%;
+  width: 76%;
+  height: 76%;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.65);
+  box-shadow: inset 0 0 42px rgba(0,0,0,0.65);
 }
 
 /* Bubble images */
 
 .bubble-img {
   position: absolute;
-  z-index: 10;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -199,18 +201,21 @@ body {
   opacity: 1;
 }
 
-/* -------------------- MACHINE ANIMATION -------------------- */
+/* =========================================================
+   MACHINE
+========================================================= */
 
 .side-machine {
   position: absolute;
   left: 50%;
-  bottom: 0%;
+  bottom: 0;
   height: 110%;
   width: auto;
+
   opacity: 0;
   pointer-events: none;
   transform-origin: center;
-  transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+  transform: translate(-50%, 0) scale(0.92) rotate(-1deg);
   z-index: 300;
 }
 
@@ -218,359 +223,84 @@ body {
   animation: machineFly 4s ease-in-out forwards;
 }
 
-.side-machine.force-exit {
-  animation: machineExit 2s ease-in forwards;
-}
-
 @keyframes machineFly {
   0% {
-    transform: translate(-260%, 0) scale(0.9) rotate(-6deg);
+    transform: translate(-260%, 0) scale(0.92) rotate(-6deg);
     opacity: 0;
   }
 
   40% {
-    transform: translate(-55%, 0) scale(0.9) rotate(-3deg);
-    opacity: 1;
-  }
-
-  60% {
-    transform: translate(-55%, 0) scale(0.9) rotate(-1.2deg);
-    opacity: 1;
-  }
-
-  90% {
-    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+    transform: translate(-55%, 0) scale(0.92) rotate(-3deg);
     opacity: 1;
   }
 
   100% {
-    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
+    transform: translate(-50%, 0) scale(0.92) rotate(-1deg);
     opacity: 1;
   }
 }
 
-@keyframes machineExit {
-  0% {
-    transform: translate(-50%, 0) scale(0.9) rotate(-1deg);
-    opacity: 1;
+/* =========================================================
+   HERO TEXT
+========================================================= */
+
+.hero-text {
+  max-width: 480px;
+  margin-left: 28px; /* чуть правее от круга */
+}
+
+.hero-text h1 {
+  font-size: clamp(2.4rem, 3.6vw, 3.3rem);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+
+.hero-lead {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.65;
+  opacity: 0.95;
+  margin-bottom: 18px;
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   RESPONSIVE (минимум)
+========================================================= */
+
+@media (max-width: 1024px) {
+
+  .visual-stage {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 80px;
+    text-align: center;
   }
 
-  100% {
-    transform: translate(220%, 0) scale(0.9) rotate(4deg);
-    opacity: 0;
+  .bubble-stage {
+    width: 460px;
   }
+
+  .hero-text {
+    margin: 0 auto;
+  }
+
 }
 
-/* -------------------- CONTROLS (PNG VERSION) -------------------- */
+@media (max-width: 640px) {
 
-.controls {
-  position: absolute;
-  bottom: -90px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  z-index: 20;
-}
+  .header-item span {
+    display: none;
+  }
 
-/* Arrow buttons */
-.arrow {
-  z-index: 10;
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .bubble-stage {
+    width: 380px;
+  }
 
-.arrow-img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  opacity: 0.85;
-  filter: drop-shadow(0 0 10px rgba(255,160,0,0.5));
-  transition: 0.25s ease;
-}
-
-.arrow-img:hover {
-  opacity: 1;
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 20px rgba(255,160,0,1));
-}
-
-/* -------------------- HAND CLICK ANIMATION -------------------- */
-
-/* Рука появляется плавно снизу */
-.hand-click {
-  z-index: 50;
-  width: 200px;
-  height: auto;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) translateY(120px) scale(0.92);
-  opacity: 0;
-  transition:
-    opacity 2s ease,
-    transform 2s cubic-bezier(0.25, 1, 0.35, 1); /* плавная пружина */
-  pointer-events: none;
-}
-
-/* красивая анимация появления руки */
-.hand-click.hand-enter {
-  opacity: 1;
-  transform: translateX(5%) translateY(80px) scale(1);
-}
-
-/* эффект клика */
-.hand-click.tap {
-  transform: translateX(5%) translateY(3px) scale(1);
-  opacity: 1;
-}
-
-
-.arrow.simulate-hover img,
-.arrow.simulate-hover .arrow-icon,
-.arrow.simulate-hover {
-  transform: scale(1.2);
-  filter: drop-shadow(0 0 18px rgba(255,160,0,1));
-  opacity: 1;
-}
-
-.arrow.simulate-hover img,
-.arrow.simulate-hover .arrow-icon,
-.arrow.simulate-hover {
-  transform: scale(1.2);
-  filter: drop-shadow(0 0 18px rgba(255,160,0,1));
-  opacity: 1;
-}
-
-
-/* -------------------- INTRO TEXT (CLEAN MOBILE VERSION) -------------------- */
-
-.intro-text {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Чистый идеальный фон */
-  background: radial-gradient(
-      circle at 50% 50%,
-      #2a2a2a 0%,
-      #0f0f0f 80%,
-      #000000 100%
-  );
-
-  text-align: center;
-  font-size: clamp(2rem, 5vw, 4rem);
-  letter-spacing: 0.1em;
-  font-weight: 800;
-  text-transform: uppercase;
-
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-
-  background-image: linear-gradient(
-      90deg,
-      #ffcf7a 0%,
-      #ffa320 40%,
-      #e57b00 100%
-  );
-
-  opacity: 0;
-  pointer-events: none;
-  z-index: 999999;
-}
-
-.intro-text--animate {
-  animation: introTextFade 4s ease-out forwards;
-}
-
-/* -------------------- FINAL SCREEN -------------------- */
-
-.final-screen {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(0,0,0,0.88);
-  opacity: 0;
-  pointer-events: none;
-
-  z-index: 2000;
-  transition: opacity 1.4s ease;
-}
-
-.final-screen--visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* LOGO */
-.final-logo {
-  width: min(42vw, 420px);
-  opacity: 0;
-  transform: translateY(30px) scale(0.92);
-  filter: blur(12px);
-  transition: 1.3s ease;
-}
-
-.final-screen--visible .final-logo {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-/* TAGLINE — в том же стиле, что интро */
-.final-tagline {
-  margin-top: 22px;
-  font-size: clamp(1.8rem, 4vw, 3.5rem);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-
-  color: transparent;
-  background-image: linear-gradient(120deg, var(--bubble-highlight), var(--bubble-mid), var(--bubble-dark));
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  opacity: 0;
-  transform: translateY(30px);
-  filter: blur(12px);
-  transition: opacity 1.4s ease 0.35s, transform 1.4s ease 0.35s;
-}
-
-.final-screen--visible .final-tagline {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* FIX: уверенный центр финального экрана */
-.final-screen {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center !important;
-  align-items: center !important;
-
-  position: fixed !important;
-  top: 0; left: 0; right: 0; bottom: 0;
-
-  padding: 0;
-  margin: 0;
-
-  z-index: 999999;
-}
-
-.final-screen > * {
-  margin: 0; /* убираем случайные внешние отступы */
-}
-
-.scene--hidden {
-  opacity: 0;
-  pointer-events: none;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-
-/* -------------------- FINAL SCREEN (clean, perfect center) -------------------- */
-
-.final-screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: radial-gradient(
-      circle at 50% -20%,
-      #2d2d2d 0%,
-      #121212 100%);
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1.2s ease;
-
-  z-index: 99999;
-}
-
-.final-screen--visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Wrapper — абсолютное выравнивание идеального центра */
-.final-screen-inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* Logo animation */
-.final-logo {
-  width: min(40vw, 380px);
-  opacity: 0;
-  transform: translateY(20px);
-  filter: blur(10px);
-  transition: 1.1s ease;
-}
-
-.final-screen--visible .final-logo {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* Tagline */
-.final-tagline {
-  margin-top: 28px;
-  text-align: center;
-
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-
-  font-size: clamp(1.5rem, 4vw, 3.5rem);
-
-  /* Точно такой же градиент, как у интро */
-  color: transparent;
-  background: linear-gradient(120deg,
-      var(--bubble-highlight),
-      var(--bubble-mid),
-      var(--bubble-dark)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  /* Такой же эффект мягкого свечения */
-  text-shadow: 0 0 40px rgba(0,0,0,0.65);
-
-  opacity: 0;
-  transform: translateY(30px);
-  filter: blur(10px);
-  transition: opacity 1.4s ease, transform 1.4s ease, filter 1.4s ease;
-}
-
-.final-screen--visible .final-tagline {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* --- TEMP: hide controls for video --- */
-.hand-click,
-.controls {
-  display: none !important;
 }

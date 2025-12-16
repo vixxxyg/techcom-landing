@@ -1,50 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechCom Landing</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechCom — Mining Equipment & Spare Parts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="scene scene--hidden" id="scene">
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+  <header class="site-header">
+  <div class="header-inner">
+
+    <a href="https://techcom.pro" class="site-logo">
+      <img src="logo-white.png" alt="TechCom logo">
+    </a>
+
+    <div class="header-contacts">
+      <a href="tel:+34919930388" class="header-item">
+        <img src="icon-phone.svg" alt="">
+        <span>+34 91 99 303 88</span>
+      </a>
+
+      <a href="mailto:info@techcom.pro" class="header-item">
+        <img src="icon-mail.svg" alt="">
+        <span>info@techcom.pro</span>
+      </a>
+
+      <div class="lang-switch">
+        <img src="en.svg" alt="EN">
+      </div>
+    </div>
+
+  </div>
+</header>
+
+  <!-- =========================
+       HERO / SCENE
+  ========================== -->
+  <section class="scene scene--hidden" id="scene">
     <div class="visual-stage">
-        <div class="bubble-stage">
-            <div class="bubble" id="bubble">
-                <div class="inner-circle">
-                    <img src="bw2.png" id="bw-img-primary" class="bubble-img bubble-img--visible" alt="TechCom project preview" />
-                    <img src="bw2.png" id="bw-img-secondary" class="bubble-img" aria-hidden="true" alt="" />
-                </div>
-             </div>
-            <img src="eqp1.png" class="side-machine" id="side-machine" alt="TechCom equipment">
-        </div>    
-    </div>
-  <div class="controls">
-    <div id="arrow-left" class="arrow">
-      <img src="arrow-left.png" class="arrow-img" alt="left">
-    </div>
-    <img id="hand" class="hand-click" src="hand.png" alt="hand">
-    <div id="arrow-right" class="arrow">
-      <img src="arrow-right.png" class="arrow-img" alt="right">
-    </div>
-  </div>
 
-</div> <!-- закрытие scene -->
+      <!-- CIRCLE + MACHINE -->
+      <div class="bubble-stage">
+        <div class="bubble">
+          <div class="inner-circle">
+            <img
+              src="bw6.png"
+              id="bw-img-primary"
+              class="bubble-img bubble-img--visible"
+              alt=""
+            />
+            <img
+              src="bw6.png"
+              id="bw-img-secondary"
+              class="bubble-img"
+              alt=""
+            />
+          </div>
+        </div>
 
-<div id="intro-text" class="intro-text">
-    SPARE PARTS FOR MINING&nbsp;&nbsp;EQUIPMENT
+        <img
+          src="eqp6.png"
+          class="side-machine"
+          id="side-machine"
+          alt="Mining equipment"
+        />
+      </div>
+
+      <!-- TEXT RIGHT -->
+      <div class="hero-text">
+  <h1>Mining equipment<br>& spare parts</h1>
+
+  <p class="hero-lead">
+    TechCom is an international supplier of mining equipment and spare parts
+    for surface and underground operations.
+  </p>
+
+  <p class="hero-sub">
+    We work with leading manufacturers and provide OEM and compatible
+    components, technical support, and reliable worldwide logistics.
+    Our team helps customers identify the right parts and equipment
+    to keep mining operations running efficiently.
+  </p>
 </div>
 
-<div id="final-screen" class="final-screen">
-  <img src="logo-white.png" class="final-logo" alt="">
+    </div>
+  </section>
 
-  <div class="final-tagline">
-      YOUR TRUSTED PARTNER<br>
-      IN MINING EQUIPMENT SOLUTIONS
-  </div>
-</div>
-</div>
+  <!-- =========================
+       CONTENT (later)
+  ========================== -->
+  <main class="page-content">
+    <!-- дальше можно будет добавлять About / Services / CTA -->
+  </main>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

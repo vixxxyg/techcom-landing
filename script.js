@@ -2,310 +2,97 @@
    PAGES
 ============================================================ */
 const pages = [
-  {
-    bubbleImage: "bw6.png",
-    machineImage: "eqp6.png",
-    background: { start: "#1a0e09", end: "#040200" }
-  },
-  {
-    bubbleImage: "bw2.png",
-    machineImage: "eqp10.png",
-    background: { start: "#0f0e22", end: "#04040e" }
-  },
-  {
-    bubbleImage: "bw4.png",
-    machineImage: "eqp7.png",
-    background: { start: "#1a1206", end: "#050505" }
-  },
-  {
-    bubbleImage: "bw.png",
-    machineImage: "eqp.png",
-    background: { start: "#1a0e09", end: "#040200" }
-  },
-  {
-    bubbleImage: "bw13.png",
-    machineImage: "eqp13.png",
-    background: { start: "#1a0e09", end: "#040200" }
-  },
-  {
-    bubbleImage: "bw12.png",
-    machineImage: "eqp12.png",
-    background: { start: "#1a0e09", end: "#040200" }
-  },
-  {
-    bubbleImage: "bw14.png",
-    machineImage: "eqp14.png",
-    background: { start: "#1a0e09", end: "#040200" }
-  }
+  { bubbleImage: "bw6.png",  machineImage: "eqp6.png"  },
+  { bubbleImage: "bw2.png",  machineImage: "eqp10.png" },
+  { bubbleImage: "bw4.png",  machineImage: "eqp7.png"  },
+  { bubbleImage: "bw.png",   machineImage: "eqp.png"   },
+  { bubbleImage: "bw13.png", machineImage: "eqp13.png" },
+  { bubbleImage: "bw12.png", machineImage: "eqp12.png" },
+  { bubbleImage: "bw14.png", machineImage: "eqp14.png" }
 ];
 
 /* ============================================================
    ELEMENTS
 ============================================================ */
-const bubbleImgPrimary = document.getElementById("bw-img-primary");
+const bubbleImgPrimary   = document.getElementById("bw-img-primary");
 const bubbleImgSecondary = document.getElementById("bw-img-secondary");
-const sideMachine = document.getElementById("side-machine");
-const hand = document.getElementById("hand");
-const arrowRight = document.getElementById("arrow-right");
-const arrowLeft = document.getElementById("arrow-left");
-const introText = document.getElementById("intro-text");
-const scene = document.getElementById("scene");
-const finalScreen = document.getElementById("final-screen");
-const root = document.documentElement;
+const sideMachine        = document.getElementById("side-machine");
+const scene              = document.getElementById("scene");
 
 /* ============================================================
    STATE
 ============================================================ */
-let currentIndex = 0;
+let index = 0;
 let isPrimaryVisible = true;
-let autoMode = true;
-let mainSequenceStarted = false;
-let isMachineFlying = false;
-let isMachineExiting = false;
-let pendingExitRequest = false;
 
-const BUBBLE_FADE_DELAY = 700;
-const AUTO_DELAY = 4000;
-const INTRO_HAND_APPEAR_DELAY = 2500;
-const INTRO_AUTO_START_DELAY = 5500;
-const HAND_EXIT_DELAY = 200;
+const AUTO_DELAY = 4200;
+const EXIT_DURATION = 900;
+const BUBBLE_DELAY = 400;
 
 /* ============================================================
-   BUBBLE FADE
+   BUBBLE SWITCH
 ============================================================ */
-function updateBubbleImage(src) {
+function switchBubble(src) {
   const incoming = isPrimaryVisible ? bubbleImgSecondary : bubbleImgPrimary;
   const outgoing = isPrimaryVisible ? bubbleImgPrimary : bubbleImgSecondary;
 
-  const reveal = () => {
+  incoming.onload = () => {
     incoming.classList.add("bubble-img--visible");
     outgoing.classList.remove("bubble-img--visible");
     isPrimaryVisible = !isPrimaryVisible;
   };
 
-  if (incoming.src.endsWith(src) && incoming.complete) {
-    reveal();
-    return;
-  }
-
-  incoming.onload = reveal;
   incoming.src = src;
 }
 
 /* ============================================================
-   BACKGROUND
+   MACHINE FLOW
 ============================================================ */
-function updateBackground(colors) {
-  root.style.setProperty("--bg-start", colors.start);
-  root.style.setProperty("--bg-end", colors.end);
-}
-
-/* ============================================================
-   SET PAGE
-============================================================ */
-function setScene(page) {
-  sideMachine.src = page.machineImage;
-  updateBackground(page.background);
-}
-
-/* ============================================================
-   MACHINE ANIMATION RESET
-============================================================ */
-function startMachineAnimation() {
+function showMachine(src) {
+  sideMachine.classList.remove("exit");
   sideMachine.classList.remove("fly");
-  sideMachine.classList.remove("force-exit");
   sideMachine.getBoundingClientRect();
 
-  isMachineFlying = true;
-  isMachineExiting = false;
-  pendingExitRequest = false;
+  sideMachine.src = src;
 
   requestAnimationFrame(() => {
     sideMachine.classList.add("fly");
   });
 }
 
-function startMachineExit() {
-  if (isMachineExiting) return;
-
-  isMachineExiting = true;
-
+function hideMachine() {
   sideMachine.classList.remove("fly");
-  sideMachine.classList.remove("force-exit");
-  sideMachine.getBoundingClientRect();
-
-  requestAnimationFrame(() => {
-    sideMachine.classList.add("force-exit");
-  });
-}
-
-function triggerExitSequence() {
-  if (isMachineFlying || isMachineExiting) return;
-
-  pendingExitRequest = false;
-  tapHand();
-
-  setTimeout(() => startMachineExit(), HAND_EXIT_DELAY);
+  sideMachine.classList.add("exit");
 }
 
 /* ============================================================
-   PAGE CYCLE
+   CYCLE
 ============================================================ */
-function runCycle(page) {
-  setScene(page);
-
-  setTimeout(() => updateBubbleImage(page.bubbleImage), BUBBLE_FADE_DELAY);
-
-  startMachineAnimation();
-}
-
-/* ============================================================
-   FINAL SEQUENCE (LOGO + TAGLINE)
-============================================================ */
-function finishSequence() {
-  autoMode = false;
-
-  if (scene) scene.classList.add("scene--hidden");
+function runCycle() {
+  hideMachine();
 
   setTimeout(() => {
-    finalScreen.classList.add("final-screen--visible");
-  }, 600);
+    index = (index + 1) % pages.length;
+
+    showMachine(pages[index].machineImage);
+    switchBubble(pages[index].bubbleImage);
+
+  }, EXIT_DURATION);
 }
 
 /* ============================================================
-   WHEN MACHINE EXITS
+   INIT
 ============================================================ */
-function handleMachineAnimationEnd(event) {
-  if (!event) return;
-
-  if (event.animationName === "machineFly") {
-    isMachineFlying = false;
-    if (pendingExitRequest && !isMachineExiting) triggerExitSequence();
-    return;
-  }
-
-  if (event.animationName === "machineExit") {
-    isMachineExiting = false;
-    pendingExitRequest = false;
-
-    const isLastPage = currentIndex === pages.length - 1;
-
-    if (isLastPage) {
-      finishSequence();
-      return;
-    }
-
-    currentIndex = (currentIndex + 1) % pages.length;
-    runCycle(pages[currentIndex]);
-  }
-}
-
-sideMachine.addEventListener("animationend", handleMachineAnimationEnd);
-
-/* ============================================================
-   HAND ANIMATION
-============================================================ */
-function showHandSmooth() {
-  hand.classList.add("hand-enter");
-}
-
-function tapHand() {
-  hand.classList.add("tap");
-  arrowRight.classList.add("simulate-hover");
-
-  setTimeout(() => {
-    hand.classList.remove("tap");
-    arrowRight.classList.remove("simulate-hover");
-  }, 300);
-}
-
-/* ============================================================
-   NEXT BUTTON
-============================================================ */
-function goNext() {
-  if (isMachineExiting || pendingExitRequest) return;
-
-  pendingExitRequest = true;
-
-  if (!isMachineFlying) triggerExitSequence();
-}
-
-/* ============================================================
-   INTRO / INITIALIZATION
-============================================================ */
-function startMainSequence() {
-  if (mainSequenceStarted) return;
-  mainSequenceStarted = true;
-
+function init() {
   scene.classList.remove("scene--hidden");
 
-  startMachineAnimation();
-
-  setTimeout(showHandSmooth, INTRO_HAND_APPEAR_DELAY);
-  setTimeout(() => autoPlay(), INTRO_AUTO_START_DELAY);
-}
-
-function runIntroSequence() {
-  introText.classList.add("intro-text--animate");
-
-  introText.addEventListener(
-    "animationend",
-    () => {
-      introText.classList.add("intro-text--hidden");
-      startMainSequence();
-    },
-    { once: true }
-  );
-}
-
-/* ============================================================
-   AUTOPLAY
-============================================================ */
-function autoPlay() {
-  if (!autoMode) return;
-  goNext();
-  setTimeout(autoPlay, AUTO_DELAY);
-}
-
-/* ============================================================
-   STOP / RESUME AUTOPLAY
-============================================================ */
-arrowLeft.addEventListener("mouseenter", () => (autoMode = false));
-arrowRight.addEventListener("mouseenter", () => (autoMode = false));
-arrowLeft.addEventListener("mouseleave", () => {
-  autoMode = true;
-  autoPlay();
-});
-arrowRight.addEventListener("mouseleave", () => {
-  autoMode = true;
-  autoPlay();
-});
-
-/* ============================================================
-   USER CLICKS
-============================================================ */
-arrowRight.addEventListener("click", () => {
-  autoMode = false;
-  goNext();
-});
-
-arrowLeft.addEventListener("click", () => {
-  autoMode = false;
-  tapHand();
-  currentIndex = (currentIndex - 1 + pages.length) % pages.length;
-  runCycle(pages[currentIndex]);
-});
-
-/* ============================================================
-   INITIAL START
-============================================================ */
-function setInitialBubbleImage(src) {
-  bubbleImgPrimary.src = src;
-  bubbleImgSecondary.src = src;
+  bubbleImgPrimary.src = pages[0].bubbleImage;
+  bubbleImgSecondary.src = pages[0].bubbleImage;
   bubbleImgPrimary.classList.add("bubble-img--visible");
-  bubbleImgSecondary.classList.remove("bubble-img--visible");
+
+  showMachine(pages[0].machineImage);
+
+  setInterval(runCycle, AUTO_DELAY);
 }
 
-setInitialBubbleImage(pages[currentIndex].bubbleImage);
-setScene(pages[currentIndex]);
-runIntroSequence();
+init();
