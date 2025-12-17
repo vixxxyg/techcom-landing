@@ -115,7 +115,7 @@ body {
 .scene {
   width: min(92vw, 1240px);
   margin: 0 auto;
-  padding-top: 140px;
+  padding-top: 30px;
 }
 
 /* ---- GRID ---- */
@@ -419,5 +419,136 @@ body {
   .about-inner {
     grid-template-columns: 1fr;
     gap: 60px;
+  }
+}
+
+/* =========================================================
+   SERVICES SECTION (MATCHING ABOUT STYLE)
+========================================================= */
+
+.services-section {
+  padding: 140px 0;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      #1f1f1f 0%,
+      #151515 60%,
+      #0f0f0f 100%
+    );
+}
+
+.services-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* HEADER */
+
+.services-header {
+  max-width: 620px;
+  margin-bottom: 80px;
+}
+
+.services-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 14px;
+}
+
+.services-header h2 {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.services-header p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #cfcfcf;
+}
+
+/* GRID — 3 IN ROW */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+}
+
+/* SERVICE CARD — LIKE STAT CARD */
+
+.service-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  background: rgba(255,255,255,0.04);
+  border-radius: 18px;
+  padding: 34px 36px;
+  border: 1px solid rgba(255,255,255,0.06);
+
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+}
+
+/* TITLE */
+
+.service-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--brand);
+}
+
+/* TEXT */
+
+.service-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #c8c8c8;
+  margin-bottom: 22px;
+}
+
+/* CTA */
+
+.service-cta {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  font-weight: 600;
+  opacity: 0.9;
+  transition: opacity 0.25s ease;
+}
+
+.service-card:hover .service-cta {
+  opacity: 1;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
   }
 }
