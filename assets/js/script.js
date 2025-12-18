@@ -2,14 +2,14 @@
    PAGES
 ============================================================ */
 const pages = [
-  { bubbleImage: "assets/images/bubble-bg-1.png",  machineImage: "assets/images/machine-1.png"  },
-  { bubbleImage: "assets/images/bubble-bg-2.png", machineImage: "assets/images/machine-2.png" },
-  { bubbleImage: "assets/images/bubble-bg-3.png",  machineImage: "assets/images/machine-3.png" },
-  { bubbleImage: "assets/images/bubble-bg-4.png",  machineImage: "assets/images/machine-4.png"  },
-  { bubbleImage: "assets/images/bubble-bg-5.png", machineImage: "assets/images/machine-5.png" },
-  { bubbleImage: "assets/images/bubble-bg-6.png",   machineImage: "assets/images/machine-6.png"   },
-  { bubbleImage: "assets/images/bubble-bg-7.png", machineImage: "assets/images/machine-7.png" },
-  { bubbleImage: "assets/images/bubble-bg-8.png", machineImage: "assets/images/machine-8.png" }
+  { bubbleImage: "../assets/images/bubble-bg-1.png",  machineImage: "../assets/images/machine-1.png"  },
+  { bubbleImage: "../assets/images/bubble-bg-2.png", machineImage: "../assets/images/machine-2.png" },
+  { bubbleImage: "../assets/images/bubble-bg-3.png",  machineImage: "../assets/images/machine-3.png" },
+  { bubbleImage: "../assets/images/bubble-bg-4.png",  machineImage: "../assets/images/machine-4.png"  },
+  { bubbleImage: "../assets/images/bubble-bg-5.png", machineImage: "../assets/images/machine-5.png" },
+  { bubbleImage: "../assets/images/bubble-bg-6.png",   machineImage: "../assets/images/machine-6.png"   },
+  { bubbleImage: "../assets/images/bubble-bg-7.png", machineImage: "../assets/images/machine-7.png" },
+  { bubbleImage: "../assets/images/bubble-bg-8.png", machineImage: "../assets/images/machine-8.png" }
 ];
 
 /* ============================================================
