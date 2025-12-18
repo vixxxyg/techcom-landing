@@ -724,3 +724,108 @@ body {
 .cta-btn.secondary:active {
   transform: translateY(-1px);
 }
+
+/* ===============================
+   MOBILE COMPACT MODE
+   =============================== */
+@media (max-width: 640px) {
+
+  /* HERO */
+  body {
+    padding-top: 60px;
+  }
+
+  .scene {
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  .bubble-stage {
+    width: 300px;
+  }
+
+  .hero-text h1 {
+    margin-bottom: 14px;
+  }
+
+  .hero-lead {
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .hero-sub {
+    line-height: 1.55;
+  }
+
+  /* ABOUT */
+  .about-section {
+    padding: 35px 0;
+  }
+
+  .about-inner {
+    gap: 32px;
+    padding: 0 16px;
+  }
+
+  .about-text h2 {
+    margin-bottom: 14px;
+  }
+
+  .about-lead {
+    margin-bottom: 12px;
+  }
+
+  .about-text p {
+    margin-bottom: 10px;
+  }
+
+  .about-stats {
+    gap: 18px;
+  }
+
+  .stat-card {
+    padding: 20px 22px;
+  }
+
+  .stat-value {
+    font-size: 1.7rem;
+  }
+
+  /* SERVICES */
+  .services-section {
+    padding: 40px 0 40px;
+  }
+
+  .services-header {
+    margin-bottom: 28px;
+  }
+
+  .services-grid {
+    gap: 20px;
+  }
+
+  .service-card {
+    padding: 22px 24px;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 55px 0;
+  }
+
+  .cta-inner {
+    padding: 0 20px;
+  }
+
+  .cta-inner p {
+    margin-bottom: 24px;
+  }
+
+  .cta-actions {
+    gap: 12px;
+  }
+
+  .cta-btn {
+    padding: 12px 20px;
+  }
+}
