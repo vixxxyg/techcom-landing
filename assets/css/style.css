@@ -43,14 +43,14 @@ body {
   width: 100%;
   height: 72px;
 
-    background: linear-gradient(
+  background: linear-gradient(
     to bottom,
     rgba(55,55,55,0.95),
     rgba(32,32,32,0.85)
   );
 
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,255,255,0.08); /* ⬅ линия */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   z-index: 100000;
 }
 
@@ -66,12 +66,14 @@ body {
 }
 
 /* Logo */
+
 .site-logo img {
   height: 60px;
   display: block;
 }
 
-/* Contacts */
+/* Header contacts */
+
 .header-contacts {
   display: flex;
   align-items: center;
@@ -81,8 +83,8 @@ body {
 .header-item {
   display: flex;
   align-items: center;
-  gap: 10px;              /* ⬅ чуть просторнее */
-  padding-top: 1px;      /* ⬅ оптическое выравнивание */
+  gap: 10px;
+  padding-top: 1px;
 
   color: #ffffff;
   font-weight: 600;
@@ -100,8 +102,7 @@ body {
 .header-item img {
   width: 20px;
   height: 20px;
-
-  filter: brightness(0) invert(1); /* ⬅ белая иконка */
+  filter: brightness(0) invert(1);
   transition: filter 0.25s ease, transform 0.25s ease;
 }
 
@@ -112,35 +113,27 @@ body {
   transform: scale(1.08);
 }
 
-.lang-switch {
-  display: flex;
-  align-items: center;
-  margin-left: 8px;
-}
-
-.lang-switch img {
-  width: 22px;       
-  height: 14px;      
-  display: block;  
-}
+/* Language switcher */
 
 .lang-switch {
   position: relative;
   display: inline-block;
+  margin-left: 8px;
 }
 
 .lang-current img {
+  padding-top: 7px;
   width: 22px;
-  height: auto;
+  height: 14px;
   cursor: pointer;
 }
 
-/* dropdown hidden by default */
 .lang-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
   margin-top: 6px;
+
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -156,7 +149,6 @@ body {
   z-index: 100;
 }
 
-/* show on hover */
 .lang-switch:hover .lang-dropdown,
 .lang-switch:focus-within .lang-dropdown {
   opacity: 1;
@@ -176,16 +168,24 @@ body {
 }
 
 /* =========================================================
-   SCENE / HERO
+   HERO / SCENE
 ========================================================= */
 
 .scene {
   width: min(92vw, 1240px);
   margin: 0 auto;
   padding-top: 30px;
+  padding-bottom: 40px;
 }
 
-/* ---- GRID ---- */
+@media (max-width: 768px) {
+  .scene {
+    padding-bottom: 60px;
+  }
+}
+
+/* Layout grid */
+
 .visual-stage {
   display: grid;
   grid-template-columns: 520px 1fr;
@@ -203,7 +203,7 @@ body {
 
 .bubble-stage {
   position: relative;
-  width: 520px;           
+  width: 520px;
   aspect-ratio: 1;
   justify-self: center;
 }
@@ -268,16 +268,6 @@ body {
   opacity: 1;
 }
 
-.scene {
-  padding-bottom: 40px;
-}
-
-@media (max-width: 768px) {
-  .scene {
-    padding-bottom: 60px;
-  }
-}
-
 /* =========================================================
    MACHINE
 ========================================================= */
@@ -305,21 +295,15 @@ body {
     transform: translate(-260%, 0) scale(0.92) rotate(-6deg);
     opacity: 0;
   }
-
   40% {
     transform: translate(-55%, 0) scale(0.92) rotate(-3deg);
     opacity: 1;
   }
-
   100% {
     transform: translate(-50%, 0) scale(0.92) rotate(-1deg);
     opacity: 1;
   }
 }
-
-/* =========================================================
-   MACHINE EXIT — move out of bubble first, then fade
-========================================================= */
 
 .side-machine.exit {
   animation: machineExit 0.9s ease-in forwards;
@@ -330,39 +314,9 @@ body {
     transform: translate(-50%, 0) scale(0.92) rotate(-1deg);
     opacity: 1;
   }
-
-  50% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0.8; /* ⬅ НЕ исчезает внутри круга */
-  }
-
-  53% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0.5; /* ⬅ НЕ исчезает внутри круга */
-  }
-
-  55% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0.2; /* ⬅ НЕ исчезает внутри круга */
-  }
-  65% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
-  }
-
-  66% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
-  }
-
-  70% {
-    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
-    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
-  }
-
   100% {
     transform: translate(5%, 0) scale(0.88) rotate(2deg);
-    opacity: 0; /* ⬅ растворяется уже за кругом */
+    opacity: 0;
   }
 }
 
@@ -372,7 +326,7 @@ body {
 
 .hero-text {
   max-width: 480px;
-  margin-left: 28px; /* чуть правее от круга */
+  margin-left: 28px;
 }
 
 .hero-text h1 {
@@ -397,11 +351,10 @@ body {
 }
 
 /* =========================================================
-   RESPONSIVE (минимум)
+   RESPONSIVE
 ========================================================= */
 
 @media (max-width: 1024px) {
-
   .visual-stage {
     grid-template-columns: 1fr;
     height: auto;
@@ -416,11 +369,9 @@ body {
   .hero-text {
     margin: 0 auto;
   }
-
 }
 
 @media (max-width: 640px) {
-
   .header-item span {
     display: none;
   }
@@ -428,24 +379,21 @@ body {
   .bubble-stage {
     width: 380px;
   }
-
 }
 
-
-/* =========================
-   ABOUT SECTION (DARK)
-========================= */
+/* =========================================================
+   ABOUT SECTION
+========================================================= */
 
 .about-section {
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      #2a2a2a 0%,
-      #181818 60%,
-      #121212 100%
-    );
+  background: radial-gradient(
+    circle at 50% 0%,
+    #2a2a2a 0%,
+    #181818 60%,
+    #121212 100%
+  );
   padding: 70px 0;
-  color: #fff;
+  color: #ffffff;
 }
 
 .about-inner {
@@ -459,14 +407,14 @@ body {
   align-items: center;
 }
 
-/* TEXT */
+/* Text */
 
 .about-label {
   display: inline-block;
   font-size: 0.8rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: #ff9900;
+  color: var(--brand);
   margin-bottom: 14px;
 }
 
@@ -492,7 +440,7 @@ body {
   margin-bottom: 14px;
 }
 
-/* STATS */
+/* Stats */
 
 .about-stats {
   display: flex;
@@ -506,13 +454,11 @@ body {
   background: rgba(255,255,255,0.04);
   border-radius: 18px;
   padding: 28px 32px;
-
   border: 1px solid rgba(255,255,255,0.06);
 
-  transition:
-    transform 0.35s ease,
-    background 0.35s ease,
-    box-shadow 0.35s ease;
+  transition: transform 0.35s ease,
+              background 0.35s ease,
+              box-shadow 0.35s ease;
 }
 
 .stat-card:hover {
@@ -521,15 +467,11 @@ body {
   box-shadow: 0 18px 40px rgba(0,0,0,0.4);
 }
 
-.stat-card {
-  position: relative;
-}
-
 .stat-value {
   display: block;
   font-size: 2.1rem;
   font-weight: 800;
-  color: #ff9900;
+  color: var(--brand);
   margin-bottom: 6px;
 }
 
@@ -539,7 +481,7 @@ body {
   line-height: 1.5;
 }
 
-/* RESPONSIVE */
+/* Responsive */
 
 @media (max-width: 900px) {
   .about-inner {
@@ -549,11 +491,11 @@ body {
 }
 
 /* =========================================================
-   SERVICES SECTION (MATCHING ABOUT STYLE)
+   SERVICES SECTION
 ========================================================= */
 
 .services-section {
-  padding: 70px 0 90px; /* ⬅ переполовинили */
+  padding: 70px 0 90px;
   background: radial-gradient(
     circle at 50% 0%,
     #1f1f1f 0%,
@@ -594,7 +536,7 @@ body {
   color: #cfcfcf;
 }
 
-/* GRID */
+/* Grid */
 
 .services-grid {
   display: grid;
@@ -602,11 +544,11 @@ body {
   gap: 28px;
 }
 
-/* CARD */
+/* Card */
 
 .service-card {
   text-decoration: none;
-  color: #fff;               /* ⬅ ФИКС фиолетового */
+  color: #ffffff;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 18px;
@@ -615,16 +557,18 @@ body {
   display: flex;
   flex-direction: column;
 
-  transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease,
+              background 0.3s ease;
 }
 
 .service-card:hover {
   transform: translateY(-6px);
   background: rgba(255,255,255,0.06);
-  box-shadow: 0 18px 40px rgba(0,0,0,.4);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
 }
 
-/* ICON */
+/* Icon */
 
 .service-icon {
   width: 52px;
@@ -636,18 +580,17 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(69%)
-    sepia(89%)
-    saturate(2476%)
-    hue-rotate(3deg)
-    brightness(101%)
-    contrast(101%);
+  filter: brightness(0)
+          saturate(100%)
+          invert(69%)
+          sepia(89%)
+          saturate(2476%)
+          hue-rotate(3deg)
+          brightness(101%)
+          contrast(101%);
 }
 
-/* TEXT */
+/* Text */
 
 .service-card h3 {
   font-size: 1.15rem;
@@ -673,7 +616,7 @@ body {
   color: var(--brand);
 }
 
-/* RESPONSIVE */
+/* Responsive */
 
 @media (max-width: 1024px) {
   .services-grid {
@@ -687,9 +630,8 @@ body {
   }
 }
 
-
 /* =========================================================
-   CTA
+   CTA SECTION
 ========================================================= */
 
 .cta-section {
@@ -731,66 +673,52 @@ body {
 
 .cta-btn {
   padding: 14px 28px;
-  border-radius: 18px; /* ⬅ как карточки */
+  border-radius: 18px;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
+
+  position: relative;
+  transition: transform 0.25s ease,
+              box-shadow 0.25s ease,
+              background 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
 }
 
 .cta-btn.primary {
   background: var(--brand);
   color: #111;
-  box-shadow: 0 10px 30px rgba(255,153,0,.35);
+  box-shadow: 0 10px 30px rgba(255,153,0,0.35);
 }
 
 .cta-btn.secondary {
-  border: 1px solid rgba(255,255,255,.25);
-  color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ffffff;
 }
 
-/* =========================================================
-   CTA BUTTONS — HOVER EFFECTS
-========================================================= */
-
-.cta-btn {
-  position: relative;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease;
-}
-
-/* ---------- PRIMARY ---------- */
+/* Hover effects */
 
 .cta-btn.primary:hover {
   color: #ffffff;
-
   border: 1px solid #ffffff;
-
   transform: translateY(-3px);
-  box-shadow:
-    0 10px 26px rgba(0,0,0,0.45);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
 }
-/* лёгкий "нажим" */
+
 .cta-btn.primary:active {
   transform: translateY(-1px);
-  box-shadow:
-    0 8px 18px rgba(255,153,0,0.45);
+  box-shadow: 0 8px 18px rgba(255,153,0,0.45);
 }
-
-/* ---------- SECONDARY ---------- */
 
 .cta-btn.secondary:hover {
   transform: translateY(-3px);
   color: var(--brand);
   border-color: var(--brand);
   background: rgba(255,153,0,0.08);
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
 }
 
 .cta-btn.secondary:active {
