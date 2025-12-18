@@ -75,7 +75,7 @@ body {
 .header-contacts {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 16px;
 }
 
 .header-item {
@@ -115,12 +115,64 @@ body {
 .lang-switch {
   display: flex;
   align-items: center;
+  margin-left: 8px;
 }
 
 .lang-switch img {
   width: 22px;       
   height: 14px;      
   display: block;  
+}
+
+.lang-switch {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-current img {
+  width: 22px;
+  height: auto;
+  cursor: pointer;
+}
+
+/* dropdown hidden by default */
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  background: rgba(20, 20, 20, 0.95);
+  padding: 8px;
+  border-radius: 8px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+/* show on hover */
+.lang-switch:hover .lang-dropdown,
+.lang-switch:focus-within .lang-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.lang-dropdown img {
+  width: 22px;
+  opacity: 0.7;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.lang-dropdown a:hover img {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 /* =========================================================
@@ -214,6 +266,16 @@ body {
 
 .bubble-img--visible {
   opacity: 1;
+}
+
+.scene {
+  padding-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .scene {
+    padding-bottom: 60px;
+  }
 }
 
 /* =========================================================
