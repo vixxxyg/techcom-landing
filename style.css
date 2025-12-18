@@ -137,7 +137,7 @@ body {
 .visual-stage {
   display: grid;
   grid-template-columns: 520px 1fr;
-  gap: 110px;
+  gap: 130px;
   align-items: center;
 
   width: 100%;
@@ -151,7 +151,7 @@ body {
 
 .bubble-stage {
   position: relative;
-  width: 520px;              /* ⬅️ круг больше */
+  width: 520px;           
   aspect-ratio: 1;
   justify-self: center;
 }
@@ -256,6 +256,55 @@ body {
 }
 
 /* =========================================================
+   MACHINE EXIT — move out of bubble first, then fade
+========================================================= */
+
+.side-machine.exit {
+  animation: machineExit 0.9s ease-in forwards;
+}
+
+@keyframes machineExit {
+  0% {
+    transform: translate(-50%, 0) scale(0.92) rotate(-1deg);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0.8; /* ⬅ НЕ исчезает внутри круга */
+  }
+
+  53% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0.5; /* ⬅ НЕ исчезает внутри круга */
+  }
+
+  55% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0.2; /* ⬅ НЕ исчезает внутри круга */
+  }
+  65% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
+  }
+
+  66% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
+  }
+
+  70% {
+    transform: translate(-15%, 0) scale(0.9) rotate(0deg);
+    opacity: 0; /* ⬅ НЕ исчезает внутри круга */
+  }
+
+  100% {
+    transform: translate(5%, 0) scale(0.88) rotate(2deg);
+    opacity: 0; /* ⬅ растворяется уже за кругом */
+  }
+}
+
+/* =========================================================
    HERO TEXT
 ========================================================= */
 
@@ -294,7 +343,7 @@ body {
   .visual-stage {
     grid-template-columns: 1fr;
     height: auto;
-    gap: 80px;
+    gap: 60px;
     text-align: center;
   }
 
@@ -637,4 +686,51 @@ body {
 .cta-btn.secondary {
   border: 1px solid rgba(255,255,255,.25);
   color: #fff;
+}
+
+/* =========================================================
+   CTA BUTTONS — HOVER EFFECTS
+========================================================= */
+
+.cta-btn {
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* ---------- PRIMARY ---------- */
+
+.cta-btn.primary:hover {
+  color: #ffffff;
+
+  border: 1px solid #ffffff;
+
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.45);
+}
+/* лёгкий "нажим" */
+.cta-btn.primary:active {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 18px rgba(255,153,0,0.45);
+}
+
+/* ---------- SECONDARY ---------- */
+
+.cta-btn.secondary:hover {
+  transform: translateY(-3px);
+  color: var(--brand);
+  border-color: var(--brand);
+  background: rgba(255,153,0,0.08);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.45);
+}
+
+.cta-btn.secondary:active {
+  transform: translateY(-1px);
 }

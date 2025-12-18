@@ -2,13 +2,14 @@
    PAGES
 ============================================================ */
 const pages = [
-  { bubbleImage: "bw6.png",  machineImage: "eqp6.png"  },
-  { bubbleImage: "bw2.png",  machineImage: "eqp10.png" },
-  { bubbleImage: "bw4.png",  machineImage: "eqp7.png"  },
-  { bubbleImage: "bw.png",   machineImage: "eqp.png"   },
-  { bubbleImage: "bw13.png", machineImage: "eqp13.png" },
-  { bubbleImage: "bw12.png", machineImage: "eqp12.png" },
-  { bubbleImage: "bw14.png", machineImage: "eqp14.png" }
+  { bubbleImage: "/assets/images/bubble-bg-1.png",  machineImage: "/assets/images/machine-1.png"  },
+  { bubbleImage: "/assets/images/bubble-bg-2.png", machineImage: "/assets/images/machine-2.png" },
+  { bubbleImage: "/assets/images/bubble-bg-3.png",  machineImage: "/assets/images/machine-3.png" },
+  { bubbleImage: "/assets/images/bubble-bg-4.png",  machineImage: "/assets/images/machine-4.png"  },
+  { bubbleImage: "/assets/images/bubble-bg-5.png", machineImage: "/assets/images/machine-5.png" },
+  { bubbleImage: "/assets/images/bubble-bg-6.png",   machineImage: "/assets/images/machine-6.png"   },
+  { bubbleImage: "/assets/images/bubble-bg-7.png", machineImage: "/assets/images/machine-7.png" },
+  { bubbleImage: "/assets/images/bubble-bg-8.png", machineImage: "/assets/images/machine-8.png" }
 ];
 
 /* ============================================================
@@ -51,7 +52,9 @@ function switchBubble(src) {
 function showMachine(src) {
   sideMachine.classList.remove("exit");
   sideMachine.classList.remove("fly");
-  sideMachine.getBoundingClientRect();
+
+  sideMachine.style.opacity = "1"; // страховка
+  sideMachine.getBoundingClientRect(); // force reflow
 
   sideMachine.src = src;
 
