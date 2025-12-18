@@ -67,7 +67,7 @@ body {
 
 /* Logo */
 .site-logo img {
-  height: 52px;
+  height: 60px;
   display: block;
 }
 
@@ -81,7 +81,8 @@ body {
 .header-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;              /* ⬅ чуть просторнее */
+  padding-top: 1px;      /* ⬅ оптическое выравнивание */
 
   color: #ffffff;
   font-weight: 600;
@@ -97,15 +98,29 @@ body {
 }
 
 .header-item img {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
+
+  filter: brightness(0) invert(1); /* ⬅ белая иконка */
+  transition: filter 0.25s ease, transform 0.25s ease;
 }
 
-/* Language flag — БЕЗ ИЗМЕНЕНИЙ */
+.header-item:hover img {
+  filter: brightness(0) saturate(100%)
+          invert(66%) sepia(96%)
+          saturate(400%) hue-rotate(350deg);
+  transform: scale(1.08);
+}
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+}
+
 .lang-switch img {
-  width: 22px;
-  height: 14px;
-  cursor: pointer;
+  width: 22px;       
+  height: 14px;      
+  display: block;  
 }
 
 /* =========================================================
@@ -337,8 +352,8 @@ body {
 
 .about-label {
   display: inline-block;
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
+  font-size: 0.8rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: #ff9900;
   margin-bottom: 14px;
@@ -427,116 +442,127 @@ body {
 ========================================================= */
 
 .services-section {
-  padding: 70px 20px 70px 20px;
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      #1f1f1f 0%,
-      #151515 60%,
-      #0f0f0f 100%
-    );
+  padding: 70px 0 90px; /* ⬅ переполовинили */
+  background: radial-gradient(
+    circle at 50% 0%,
+    #1f1f1f 0%,
+    #151515 60%,
+    #0f0f0f 100%
+  );
 }
 
-/* OUTER SAFE AREA — чтобы ничего не липло к экрану */
 .services-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px; /* ⬅ ВАЖНО: воздух от краёв экрана */
+  padding: 0 32px;
 }
-
-/* HEADER */
 
 .services-header {
   max-width: 640px;
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 }
 
 .services-label {
-  display: inline-block;
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
+  font-size: 0.8rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--brand);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+  display: inline-block;
 }
 
 .services-header h2 {
-  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .services-header p {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.7;
   color: #cfcfcf;
 }
 
-/* GRID — 3 IN ROW */
+/* GRID */
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
 }
 
-/* SERVICE CARD — LIKE STAT CARD */
+/* CARD */
 
 .service-card {
+  text-decoration: none;
+  color: #fff;               /* ⬅ ФИКС фиолетового */
   background: rgba(255,255,255,0.04);
-  border-radius: 20px;
-  padding: 32px 34px;
   border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 28px 30px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease;
+  transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
 }
 
 .service-card:hover {
   transform: translateY(-6px);
   background: rgba(255,255,255,0.06);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 18px 40px rgba(0,0,0,.4);
 }
 
-/* TITLE */
+/* ICON */
+
+.service-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+}
+
+.service-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    brightness(0)
+    saturate(100%)
+    invert(69%)
+    sepia(89%)
+    saturate(2476%)
+    hue-rotate(3deg)
+    brightness(101%)
+    contrast(101%);
+}
+
+/* TEXT */
 
 .service-card h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .service-card p {
-  font-size: 0.92rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  line-height: 1.6;
   color: #c8c8c8;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
-/* CTA INSIDE CARD */
+/* CTA */
 
 .service-cta {
-  font-size: 0.78rem;
+  margin-top: auto;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand);
   font-weight: 600;
-  opacity: 0.85;
-  transition: opacity 0.25s ease;
+  color: var(--brand);
 }
 
-.service-card:hover .service-cta {
-  opacity: 1;
-}
-
-/* RESPONSIVE — SERVICES */
+/* RESPONSIVE */
 
 @media (max-width: 1024px) {
   .services-grid {
@@ -545,10 +571,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  .services-inner {
-    padding: 0 20px;
-  }
-
   .services-grid {
     grid-template-columns: 1fr;
   }
@@ -556,124 +578,63 @@ body {
 
 
 /* =========================================================
-   CTA SECTION — FINAL ACCENT
+   CTA
 ========================================================= */
 
 .cta-section {
-  padding: 70px 0;
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      #2a2a2a 0%,
-      #1a1a1a 60%,
-      #101010 100%
-    );
+  padding: 90px 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    #2a2a2a 0%,
+    #1a1a1a 60%,
+    #101010 100%
+  );
 }
-
-/* SAFE WIDTH */
 
 .cta-inner {
   max-width: 760px;
   margin: 0 auto;
-  padding: 0 32px; /* ⬅ воздух от краёв */
+  padding: 0 32px;
   text-align: center;
 }
 
 .cta-inner h2 {
-  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
   font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .cta-inner p {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   line-height: 1.7;
   color: #cfcfcf;
-  margin-bottom: 46px;
+  margin-bottom: 36px;
 }
-
-/* BUTTONS */
 
 .cta-actions {
   display: flex;
   justify-content: center;
-  gap: 22px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
-/* SHARED BUTTON STYLE */
-
 .cta-btn {
-  padding: 16px 34px;
-  border-radius: 20px; /* ⬅ КАК У КАРТОЧЕК */
-  font-size: 0.8rem;
+  padding: 14px 28px;
+  border-radius: 18px; /* ⬅ как карточки */
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease,
-    color 0.25s ease;
 }
-
-/* PRIMARY */
 
 .cta-btn.primary {
   background: var(--brand);
   color: #111;
-  box-shadow: 0 10px 30px rgba(255,153,0,0.35);
+  box-shadow: 0 10px 30px rgba(255,153,0,.35);
 }
-
-.cta-btn.primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 40px rgba(255,153,0,0.45);
-}
-
-/* SECONDARY */
 
 .cta-btn.secondary {
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #ffffff;
-}
-
-.cta-btn.secondary:hover {
-  background: rgba(255,255,255,0.06);
-  transform: translateY(-3px);
-}
-
-/* RESPONSIVE CTA */
-
-@media (max-width: 640px) {
-  .cta-inner {
-    padding: 0 20px;
-  }
-}
-
-/* =========================
-   RESET LINK COLORS INSIDE CARDS
-========================= */
-
-.service-card,
-.service-card:visited {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.service-card h3,
-.service-card p,
-.service-card span {
-  color: inherit;
-}
-
-/* CTA внутри карточки — всегда бренд */
-.service-card .service-cta {
-  color: var(--brand);
-}
-
-.service-card:visited .service-cta {
-  color: var(--brand);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff;
 }
