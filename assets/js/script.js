@@ -13,7 +13,7 @@ if (
   path.endsWith("/index.html") ||
   path.match(/^\/techcom-landing(\/)?$/)
 ) {
-  ASSET_PREFIX = "./assets/";
+  ASSET_PREFIX = "/assets/";
 }
 
 
